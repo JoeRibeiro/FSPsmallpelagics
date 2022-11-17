@@ -6,6 +6,7 @@
 # ===================================================--
 # 0. Set directories----
 # ===================================================--
+setwd('C:/Users/JR13/Downloads/2021FSP/')
 rm(list=ls())
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
@@ -188,7 +189,8 @@ a <- ggplot(pil, aes(x=as.numeric(TLcm))) +
 str(pil$date)
 str(pil)
 pil$weight.g <- as.numeric(pil$weight.g)
-pil$TLcm <- as.numeric(pil$length.cm)
+
+pil$TLcm <- as.numeric(pil$TLcm)
 
 ggplot(pil,aes(x=TLcm,y=weight.g))+geom_jitter(aes(color=as.factor(month(pil$date))))+theme(legend.position="bottom")
 ggplot(pil,aes(x=TLcm,y=weight.g))+geom_jitter(aes(color=vessel))+theme(legend.position="bottom")
@@ -358,409 +360,409 @@ FALFISH$ID <- paste("FALFISH",FALFISH$ID2,sep="_")
 FALFISH <- FALFISH[,c("Date","Vessel","SampleWt", "month", "year", "TLcm", "weight","ID")]
 
 #save the file
-#write.csv(FALFISH, file=paste(out_dir,"/PIL_FALFISH_2022.csv",sep="/"),quote=F,row.names = F)
-
-
-# ===================================================--
-# 3. PIL OCEANFISH----
-# ===================================================--
-#the files that they give to me earlier were in .ods format, and i've i tried to put them in excel, they lose the format, so i will merge it to the new files
-inp_dir_ocean <- file.path(getwd(),"Data/Processors/PIL/OceanFish/")
-list.files(inp_dir_ocean)
-
-# read excel files #remove the port from the files for the script to work propoerly
-#myfiles <- list.files(path=inp_dir_ocean, pattern=c("*2020.xlsx|*2021.xlsx"), recursive = FALSE, full.names = FALSE, include.dirs=F)
-myfiles <- list.files(path=inp_dir_ocean, pattern=c("*.xlsx"), recursive = FALSE, full.names = FALSE, include.dirs=F)
-
-
-### Extract Length-Weight Data from the processors files
-mydata <- list()
-#library(openxlsx)
-for(i in 1:length(myfiles)){
-  # temporary object with sheetnames
-  temp <- unlist(getSheetNames(paste(inp_dir_ocean,myfiles[i], sep="/")))
-  {mydata[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_ocean,myfiles[i], sep="/"), sheetName=temp[1],header=T,stringsAsFactors = FALSE)
-    #mydata[[i]]$Date <- strftime(strptime(mydata[[i]]$Date,"%Y/%m/%d"))}# as.is avoids data to be converted to factors
-  }}
-
-#do the same with the function, not working properly
-#readfiles(inp_dir_ocean,myfiles)
-
-str(mydata)
-head(mydata[[1]]) # check everything is alright
-
-file2 <- mydata
-file2 <- do.call(rbind, lapply(mydata, as.data.frame))
-
-colnames(file2) <- c("Date","Vessel","Landing_kg","size_g1","size_g2","size_g3","size_g4","size_g5","size_g6","size_g7","size_g8","size_g9","size_g10", 
-                     "length_cm1","length_cm2","length_cm3","length_cm4","length_cm5","length_cm6","length_cm7","length_cm8","length_cm9","length_cm10",
-                     "Fishpkilo","avgsize_g","avglength_cm")
-head(file2)
-dim(file2);str(file2)
-
-#remove blank spaces in the Vessel name
-unique(file2$Vessel)
-file2$Vessel[file2$Vessel == "Athore"] <- "Asthore"
-file2$Vessel[file2$Vessel == "Vesta "] <- "Vesta"
-file2$Vessel <- trimws(file2$Vessel)
-
-#unify the names of the vessels
-table(file2$Vessel)
-file2$Vessel <- tolower(as.character(file2$Vessel))
-
-#eliminate columns that you don't want
-file2 <- file2[,c("Date","Vessel","Landing_kg","size_g1","size_g2","size_g3","size_g4","size_g5","size_g6","size_g7","size_g8","size_g9","size_g10", 
-                  "length_cm1","length_cm2","length_cm3","length_cm4","length_cm5","length_cm6","length_cm7","length_cm8","length_cm9","length_cm10")]
-
-# convert date in date format
-file2$Date<-strftime(strptime(file2$Date,"%Y-%m-%d"),"%d/%m/%Y")  #changing from one format to another one
-
-#fill up empty spaces
-for(i in 1:nrow(file2)){
-  {if(is.na(file2$Date[i]))
-    file2$Date[i]=file2$Date[i-1]}
-  {if(is.na(file2$Vessel[i]))
-    file2$Vessel[i]=file2$Vessel[i-1]}
-  {if(is.na(file2$Landing_kg[i]))
-    file2$Landing_kg[i]=file2$Landing_kg[i-1]}
-  {if(is.na(file2$size_g1[i]))
-    file2$size_g1[i]=0}
-  {if(is.na(file2$size_g2[i]))
-    file2$size_g2[i]=0}
-  {if(is.na(file2$size_g3[i]))
-    file2$size_g3[i]=0}
-  {if(is.na(file2$size_g4[i]))
-    file2$size_g4[i]=0}
-  {if(is.na(file2$size_g5[i]))
-    file2$size_g5[i]=0}
-  {if(is.na(file2$size_g6[i]))
-    file2$size_g6[i]=0}
-  {if(is.na(file2$size_g7[i]))
-    file2$size_g7[i]=0}
-  {if(is.na(file2$size_g8[i]))
-    file2$size_g8[i]=0}
-  {if(is.na(file2$size_g9[i]))
-    file2$size_g9[i]=0}
-  {if(is.na(file2$size_g10[i]))
-    file2$size_g10[i]=0}
-  {if(is.na(file2$length_cm1[i]))
-    file2$length_cm1[i]=0}
-  {if(is.na(file2$length_cm2[i]))
-    file2$length_cm2[i]=0}
-  {if(is.na(file2$length_cm3[i]))
-    file2$length_cm3[i]=0}
-  {if(is.na(file2$length_cm4[i]))
-    file2$length_cm4[i]=0}
-  {if(is.na(file2$length_cm5[i]))
-    file2$length_cm5[i]=0}
-  {if(is.na(file2$length_cm6[i]))
-    file2$length_cm6[i]=0}
-  {if(is.na(file2$length_cm7[i]))
-    file2$length_cm7[i]=0}
-  {if(is.na(file2$length_cm8[i]))
-    file2$length_cm8[i]=0}
-  {if(is.na(file2$length_cm9[i]))
-    file2$length_cm9[i]=0}
-  {if(is.na(file2$length_cm10[i]))
-    file2$length_cm10[i]=0}
-}
-
-#View(file2)
-summary(file2)
-
-# column for month and year
-file2$month <- month(file2$Date)
-file2$month <- format(as.Date(file2$Date, format="%d/%m/%Y"),"%m")
-#file2$year <- year(file2$Date, format="%d/%m/%Y")
-file2$year <- format(as.Date(file2$Date, format="%d/%m/%Y"),"%Y")
-
-
-#create a size  and length database
-size <- file2[,c("Date","year","Vessel","Landing_kg","size_g1","size_g2","size_g3","size_g4","size_g5","size_g6","size_g7","size_g8","size_g9","size_g10")]
-length <- file2[,c("Date","year","Vessel","Landing_kg","length_cm1","length_cm2","length_cm3","length_cm4","length_cm5","length_cm6","length_cm7","length_cm8","length_cm9","length_cm10")]
-
-size;dim(size)
-length;dim(length)
-
-table(size$Vessel)
-table(length$Vessel)
-
-#subset first the vessels that you have
-asthore <- subset(size,Vessel=="asthore")
-mayflower <-subset(size,Vessel=="mayflower")
-vesta <- subset(size,Vessel=="vesta")
-resolute <- subset(size,Vessel=="resolute")
-serene <- subset(size,Vessel=="serene dawn")
-
-ves=c("asthore","mayflower","vesta","resolute","serene")
-dat <- unique(size$Date)
-num=as.vector(1:length(dat))
-#dat <- unique(as.POSIXct(as.POSIXlt(size$Date))) 
-
-#for size (length in cm)
-all <- list()
-pre <- list()
-
-for(j in num){
-  all[[j]] <- get(ves[j])
-  #all[[j]]$Date <- as.POSIXct(as.POSIXlt(all[[j]]$Date)) 
-  pre[[j]] <- melt(all[[j]],id=c("Date","Vessel","Landing_kg","year"))
-}
-
-allpre <- do.call(rbind.data.frame,pre)
-#View(allpre)
-
-#for length
-#subset first the vessels that you have
-asthore <- subset(length,Vessel=="asthore")
-mayflower <-subset(length,Vessel=="mayflower")
-vesta <- subset(length,Vessel=="vesta")
-resolute <- subset(length,Vessel=="resolute")
-serene <- subset(length,Vessel=="serene dawn")
-
-len <- list()
-lenses <- list()
-
-for(j in num){
-  len[[j]] <- get(ves[j])
-  #len[[j]]$Date <- as.POSIXct(as.POSIXlt(len[[j]]$Date)) 
-  lenses[[j]] <- melt(len[[j]],id=c("Date","Vessel","Landing_kg","year"))
-}
-
-lenlenses <- do.call(rbind.data.frame,lenses)
-#View(lenlenses)
-
-#merge both length and weight (order first)
-dim(lenlenses)
-dim(allpre)
-
-allpre<-allpre[with(allpre,order(Date,Vessel)),]
-lenlenses<-lenlenses[with(lenlenses,order(Date,Vessel)),]
-
-colnames(allpre)[5:6] <- c("size_g","weight_g")
-colnames(lenlenses)[5:6] <- c("measure_cm","length_cm")
-
-LW <- cbind(allpre,lenlenses)
-head(LW)
-LW <- LW[c("Date","Vessel","Landing_kg", "year","length_cm","weight_g")]
-LW$species <- "PIL"
-plot(weight_g~length_cm,LW, main="PIL Oceanfish 2020/2021")
-
-aver <- subset(LW,!length_cm==0) #without the zeros
-plot(weight_g~length_cm,aver, main="PIL Oceanfish 2020/2021")
-#View(subset(LW,length_cm<12.0))
-
-#correct errors
-#LW$length_cm[LW$length_cm == "18.54"] <- "18.5"
-#LW$length_cm[LW$length_cm == "21.54"] <- "21.5"
-#LW$length_cm[LW$length_cm == "19.1"] <- "19"
-
-table(LW$length_cm)
-
-str(LW$Date)
-#LW$Date <- format(as.Date(LW$Date), format="%Y-%m-%d"),"%d/%m/%Y")
-#file2$year <- year(file2$Date, format="%d/%m/%Y")
-
-#LW$month <- month(LW$Date)
-LW$month<- format(as.Date(LW$Date, format="%d/%m/%Y"),"%m")
-head(LW)
-
-ggplot(LW)+geom_point(aes(y=weight_g,x=length_cm,colour=as.factor(month)))
-ggplot(LW)+geom_jitter(aes(y=weight_g,x=length_cm,colour=as.factor(month)))
-ggplot(LW)+geom_smooth(aes(y=weight_g,x=length_cm,colour=as.factor(month)))
-ggplot(LW)+geom_density(aes(x=length_cm,colour=as.factor(month))) # you can see length variation by month
-
-
-#need to transform bins and dolavs to kg in the landing
-#1 bin or dolav=350 kg sardine
-table(LW$Landing_kg)
-
-#transform the landings into kg
-LW$Landing_kg <- gsub("bins|bin|dolavs|Bins|Dolavs","   ", LW$Landing_kg)
-table(LW$Landing_kg)
-LW$Landing_kg <- as.numeric(LW$Landing_kg)*350
-
-
-#add sample weight----
-sample <- with (LW,aggregate(weight_g,list(Date=Date,month=month,year=year,Vessel=Vessel),sum))
-sample
-colnames(sample)[5] <- "Wsample_g"
-
-LW <- merge(LW,sample)
-
-head(LW)
-LW$ID <- paste(LW$Vessel,"Oceanfish",sep="_")
-
-#save file
-#write.csv(LW, file=paste(out_dir,"PIL_OceanfishLW_2020_vs4.csv",sep="/"),quote=F,row.names = F)# until 26/11/2020
-
-
-# ===================================================--
-# 4. PIL COOMBEFISHERIES----
-# ===================================================--
-##reading directly the fils in the formt they've send them
-inp_dir_cf <- file.path(getwd(),"Data/Processors/PIL/CoombeFisheries/")
-list.files(inp_dir_cf)
-# read excel files
-myfiles <- list.files(path=inp_dir_cf, pattern="*.xlsx", recursive = FALSE, full.names = FALSE, include.dirs=F)
-
-
-## Extract Length-Weight Data from the processors files
-mydata <- list()
-for(i in 1:length(myfiles)){
-  # temporary object with sheetnames
-  temp <- unlist(getSheetNames(paste(inp_dir_cf,myfiles[i], sep="/")))
-  # if less than 3 sheets, issue a warning and move on to next iteration
-  if(length(temp)>2) {
-    mydata[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetName=temp[1],header=F)} else {
-      warning('Check ', myfiles[i], ": sheet LW might be missing")}
-}
-
-#mydata <- mapply(cbind, mydata, "SampleID"=myfiles, SIMPLIFY=F)
-#mydata <- data.table(do.call(rbind.data.frame, mydata))
-
-#for anchovies they only weight them, so we don't have lengths
-
-# Extract date (should be in dd/mm/yyyy format in the original file)
-dates <- list()
-for(i in 1:length(myfiles)){
-  dates[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetIndex=1, startRow=1, rowIndex = 1, header=F, colIndex = 2)
-  if(is.na(dates[[myfiles[i]]])) dates[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetIndex=1, startRow=1, rowIndex = 1, header=F, colIndex = 2) 
-} 
-
-dates <- mapply(cbind, dates, "SampleID"=myfiles, SIMPLIFY=F) 
-dates <- data.table(do.call(rbind.data.frame, dates))
-dates <- as.data.frame(dates)
-
-# Extract vessel
-vessel <- list()
-for(i in 1:length(myfiles)){
-  vessel[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetIndex=1, startRow=1, rowIndex = 1, header=F, colIndex = 25)
-  if(is.na(vessel[[myfiles[i]]])) vessel[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetIndex=1, startRow=1, rowIndex = 1, header=F, colIndex = 25) 
-} 
-vessel <- mapply(cbind, vessel, "SampleID"=myfiles, SIMPLIFY=F)
-vessel <- data.table(do.call(rbind.data.frame, vessel))
-vessel <- as.data.frame(vessel)
-
-mydata2 <-mydata 
-#mydata2$`21210819.xlsx`
-
-# Extract the weight(g) of the individuals (they can be in 3 different columns)
-llista <- list()
-for(i in 1:length(mydata2)){
-  llista[[i]] <- mydata2[[i]][rowSums(is.na(mydata2[[i]][,0:ncol(mydata2[[i]])]))<ncol(mydata2[[i]]),c(2,18,40,62)]
-}
-
-for(i in 1:length(llista)){
-  llista[[i]] <- llista[[i]][c(3:48),]
-}
-
-
-llista <- mapply(cbind, llista, "SampleID"=myfiles, SIMPLIFY=F)
-llista <- data.table(do.call(rbind.data.frame, llista))
-llista <- as.data.frame(llista)
-
-head(dates)
-head(llista)
-llista <- merge(dates,llista,by=c("SampleID"))
-names(llista) <- c("SampleID","date","todel","X18","X40","X62")
-
-# tidyr library to reorder the database
-library(tidyr)
-tb <- as_tibble(llista, stringsAsFactors = FALSE)
-tb
-
-tb2 <- tb %>%
-  pivot_longer(
-    X18:X62,
-    names_to = "variable",
-    values_to = "weight",
-    values_drop_na = TRUE
-  )
-
-#View(tb2)
-head(tb2)
-
-tb3 <- tb2 %>%
-  separate(weight, c("w1", "w2"), 2)
-tb3
-#View(tb3)
-
-tb3 <- as.data.frame(tb3)
-str(tb3)
-
-table(tb3$w2)# some of the columns have more than 2 values, need to split
-table(tb3$SampleID)
-tb3$SampleID <- gsub(" ", "",tb3$SampleID)
-
-table(tb3$date,tb3$SampleID)
-tb3$date <- substr(tb3$SampleID,3,10)
-#tb3$date[tb3$date==".10.20AN"] <- "28.10.20"
-table(tb3$date)
-tb3$date <- as.Date(tb3$date,"%d.%m.%y")
-
-tb3 <- tb3[,c("w1","w2","date")]
-
-w1 <- tb3[,c("w1","date")]
-w2 <- tb3[,c("w2","date")]
-
-head(w1)
-w1$w1 <- as.numeric(w1$w1)
-w1$w1[w1$w1=="11"] <- "119"
-str(w1)
-w1$w1 <- as.numeric(as.character(w1$w1))
-plot(w1$w1)
-
-# w2$w2 <- gsub("[^0-9]","",w2)
-head(w2)
-table(w2$w2)
-w2$w2[w2$w2=="9  52"] <- "52"
-w2$w2[w2$w2=="77  49"] <- "49"
-w2$w2 <- as.numeric(w2$w2)
-plot(w2$w2)
-
-
-#also from tydr library
-#w3 <- separate_rows(w2, w2, convert = TRUE)
-#View(w3)
-#w3 <- drop_na(w3)
-
-head(w1);dim(w1)
-head(w2);dim(w2)
-#w3 <- as.data.frame(w3)
-colnames(w2) <- c("w1","date")
-w4 <- rbind(w1,w2)
-
-head(w4);dim(w4)
-w4$month <- month(w4$date)
-w4$year <- year(w4$date)
-table(w4$month)
-
-#add sample weight----
-w4$w1 <- as.numeric(as.character(w4$w1))
-summary(w4$w1) #need to transform the NA in zeros
-w4$w1[is.na(w4$w1)] <- 0
-sample <- with (w4,aggregate(w1,list(date=date,month=month,year=year),sum))
-sample
-colnames(sample)[4] <- "Wsample_g"
-
-w4 <- merge(w4,sample)
-
-#format it
-head(w4)
-w4$species <- "PIL"
-w4$vessel <- "GIRLRONA"
-w4$processor <- "CombeeFisheries"
-w4$source <- "processor"
-w4$landing_kg <- ""
-w4$length_cm <- ""
-
-w4 <- w4[,c("date","month","year","species","vessel","landing_kg","length_cm","w1","Wsample_g","processor","source")]
-colnames(w4) <- c("date","month","year","species","vessel","landing_kg","length_cm","Weight_g","Wsample_g","processor","source")
-
-#save the aggregated data and ready to start the analysis
-#write.csv(w4, file=paste(out_dir,"final/PIL_CoombeFisheriesW_vs2.csv",sep="/"),quote=F,row.names = F)
-######################################################################################################################--
+write.csv(FALFISH, file=paste(out_dir,"/PIL_FALFISH_2022.csv",sep="/"),quote=F,row.names = F)
+
+
+# # ===================================================--
+# # 3. PIL OCEANFISH----
+# # ===================================================--
+# #the files that they give to me earlier were in .ods format, and i've i tried to put them in excel, they lose the format, so i will merge it to the new files
+# inp_dir_ocean <- file.path(getwd(),"Data/Processors/PIL/OceanFish/")
+# list.files(inp_dir_ocean)
+# 
+# # read excel files #remove the port from the files for the script to work propoerly
+# #myfiles <- list.files(path=inp_dir_ocean, pattern=c("*2020.xlsx|*2021.xlsx"), recursive = FALSE, full.names = FALSE, include.dirs=F)
+# myfiles <- list.files(path=inp_dir_ocean, pattern=c("*.xlsx"), recursive = FALSE, full.names = FALSE, include.dirs=F)
+# 
+# 
+# ### Extract Length-Weight Data from the processors files
+# mydata <- list()
+# #library(openxlsx)
+# for(i in 1:length(myfiles)){
+#   # temporary object with sheetnames
+#   temp <- unlist(getSheetNames(paste(inp_dir_ocean,myfiles[i], sep="/")))
+#   {mydata[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_ocean,myfiles[i], sep="/"), sheetName=temp[1],header=T,stringsAsFactors = FALSE)
+#     #mydata[[i]]$Date <- strftime(strptime(mydata[[i]]$Date,"%Y/%m/%d"))}# as.is avoids data to be converted to factors
+#   }}
+# 
+# #do the same with the function, not working properly
+# #readfiles(inp_dir_ocean,myfiles)
+# 
+# str(mydata)
+# head(mydata[[1]]) # check everything is alright
+# 
+# file2 <- mydata
+# file2 <- do.call(rbind, lapply(mydata, as.data.frame))
+# 
+# colnames(file2) <- c("Date","Vessel","Landing_kg","size_g1","size_g2","size_g3","size_g4","size_g5","size_g6","size_g7","size_g8","size_g9","size_g10", 
+#                      "length_cm1","length_cm2","length_cm3","length_cm4","length_cm5","length_cm6","length_cm7","length_cm8","length_cm9","length_cm10",
+#                      "Fishpkilo","avgsize_g","avglength_cm")
+# head(file2)
+# dim(file2);str(file2)
+# 
+# #remove blank spaces in the Vessel name
+# unique(file2$Vessel)
+# file2$Vessel[file2$Vessel == "Athore"] <- "Asthore"
+# file2$Vessel[file2$Vessel == "Vesta "] <- "Vesta"
+# file2$Vessel <- trimws(file2$Vessel)
+# 
+# #unify the names of the vessels
+# table(file2$Vessel)
+# file2$Vessel <- tolower(as.character(file2$Vessel))
+# 
+# #eliminate columns that you don't want
+# file2 <- file2[,c("Date","Vessel","Landing_kg","size_g1","size_g2","size_g3","size_g4","size_g5","size_g6","size_g7","size_g8","size_g9","size_g10", 
+#                   "length_cm1","length_cm2","length_cm3","length_cm4","length_cm5","length_cm6","length_cm7","length_cm8","length_cm9","length_cm10")]
+# 
+# # convert date in date format
+# file2$Date<-strftime(strptime(file2$Date,"%Y-%m-%d"),"%d/%m/%Y")  #changing from one format to another one
+# 
+# #fill up empty spaces
+# for(i in 1:nrow(file2)){
+#   {if(is.na(file2$Date[i]))
+#     file2$Date[i]=file2$Date[i-1]}
+#   {if(is.na(file2$Vessel[i]))
+#     file2$Vessel[i]=file2$Vessel[i-1]}
+#   {if(is.na(file2$Landing_kg[i]))
+#     file2$Landing_kg[i]=file2$Landing_kg[i-1]}
+#   {if(is.na(file2$size_g1[i]))
+#     file2$size_g1[i]=0}
+#   {if(is.na(file2$size_g2[i]))
+#     file2$size_g2[i]=0}
+#   {if(is.na(file2$size_g3[i]))
+#     file2$size_g3[i]=0}
+#   {if(is.na(file2$size_g4[i]))
+#     file2$size_g4[i]=0}
+#   {if(is.na(file2$size_g5[i]))
+#     file2$size_g5[i]=0}
+#   {if(is.na(file2$size_g6[i]))
+#     file2$size_g6[i]=0}
+#   {if(is.na(file2$size_g7[i]))
+#     file2$size_g7[i]=0}
+#   {if(is.na(file2$size_g8[i]))
+#     file2$size_g8[i]=0}
+#   {if(is.na(file2$size_g9[i]))
+#     file2$size_g9[i]=0}
+#   {if(is.na(file2$size_g10[i]))
+#     file2$size_g10[i]=0}
+#   {if(is.na(file2$length_cm1[i]))
+#     file2$length_cm1[i]=0}
+#   {if(is.na(file2$length_cm2[i]))
+#     file2$length_cm2[i]=0}
+#   {if(is.na(file2$length_cm3[i]))
+#     file2$length_cm3[i]=0}
+#   {if(is.na(file2$length_cm4[i]))
+#     file2$length_cm4[i]=0}
+#   {if(is.na(file2$length_cm5[i]))
+#     file2$length_cm5[i]=0}
+#   {if(is.na(file2$length_cm6[i]))
+#     file2$length_cm6[i]=0}
+#   {if(is.na(file2$length_cm7[i]))
+#     file2$length_cm7[i]=0}
+#   {if(is.na(file2$length_cm8[i]))
+#     file2$length_cm8[i]=0}
+#   {if(is.na(file2$length_cm9[i]))
+#     file2$length_cm9[i]=0}
+#   {if(is.na(file2$length_cm10[i]))
+#     file2$length_cm10[i]=0}
+# }
+# 
+# #View(file2)
+# summary(file2)
+# 
+# # column for month and year
+# file2$month <- month(file2$Date)
+# file2$month <- format(as.Date(file2$Date, format="%d/%m/%Y"),"%m")
+# #file2$year <- year(file2$Date, format="%d/%m/%Y")
+# file2$year <- format(as.Date(file2$Date, format="%d/%m/%Y"),"%Y")
+# 
+# 
+# #create a size  and length database
+# size <- file2[,c("Date","year","Vessel","Landing_kg","size_g1","size_g2","size_g3","size_g4","size_g5","size_g6","size_g7","size_g8","size_g9","size_g10")]
+# length <- file2[,c("Date","year","Vessel","Landing_kg","length_cm1","length_cm2","length_cm3","length_cm4","length_cm5","length_cm6","length_cm7","length_cm8","length_cm9","length_cm10")]
+# 
+# size;dim(size)
+# length;dim(length)
+# 
+# table(size$Vessel)
+# table(length$Vessel)
+# 
+# #subset first the vessels that you have
+# asthore <- subset(size,Vessel=="asthore")
+# mayflower <-subset(size,Vessel=="mayflower")
+# vesta <- subset(size,Vessel=="vesta")
+# resolute <- subset(size,Vessel=="resolute")
+# serene <- subset(size,Vessel=="serene dawn")
+# 
+# ves=c("asthore","mayflower","vesta","resolute","serene")
+# dat <- unique(size$Date)
+# num=as.vector(1:length(dat))
+# #dat <- unique(as.POSIXct(as.POSIXlt(size$Date))) 
+# 
+# #for size (length in cm)
+# all <- list()
+# pre <- list()
+# 
+# for(j in num){
+#   all[[j]] <- get(ves[j])
+#   #all[[j]]$Date <- as.POSIXct(as.POSIXlt(all[[j]]$Date)) 
+#   pre[[j]] <- melt(all[[j]],id=c("Date","Vessel","Landing_kg","year"))
+# }
+# 
+# allpre <- do.call(rbind.data.frame,pre)
+# #View(allpre)
+# 
+# #for length
+# #subset first the vessels that you have
+# asthore <- subset(length,Vessel=="asthore")
+# mayflower <-subset(length,Vessel=="mayflower")
+# vesta <- subset(length,Vessel=="vesta")
+# resolute <- subset(length,Vessel=="resolute")
+# serene <- subset(length,Vessel=="serene dawn")
+# 
+# len <- list()
+# lenses <- list()
+# 
+# for(j in num){
+#   len[[j]] <- get(ves[j])
+#   #len[[j]]$Date <- as.POSIXct(as.POSIXlt(len[[j]]$Date)) 
+#   lenses[[j]] <- melt(len[[j]],id=c("Date","Vessel","Landing_kg","year"))
+# }
+# 
+# lenlenses <- do.call(rbind.data.frame,lenses)
+# #View(lenlenses)
+# 
+# #merge both length and weight (order first)
+# dim(lenlenses)
+# dim(allpre)
+# 
+# allpre<-allpre[with(allpre,order(Date,Vessel)),]
+# lenlenses<-lenlenses[with(lenlenses,order(Date,Vessel)),]
+# 
+# colnames(allpre)[5:6] <- c("size_g","weight_g")
+# colnames(lenlenses)[5:6] <- c("measure_cm","length_cm")
+# 
+# LW <- cbind(allpre,lenlenses)
+# head(LW)
+# LW <- LW[c("Date","Vessel","Landing_kg", "year","length_cm","weight_g")]
+# LW$species <- "PIL"
+# plot(weight_g~length_cm,LW, main="PIL Oceanfish 2020/2021")
+# 
+# aver <- subset(LW,!length_cm==0) #without the zeros
+# plot(weight_g~length_cm,aver, main="PIL Oceanfish 2020/2021")
+# #View(subset(LW,length_cm<12.0))
+# 
+# #correct errors
+# #LW$length_cm[LW$length_cm == "18.54"] <- "18.5"
+# #LW$length_cm[LW$length_cm == "21.54"] <- "21.5"
+# #LW$length_cm[LW$length_cm == "19.1"] <- "19"
+# 
+# table(LW$length_cm)
+# 
+# str(LW$Date)
+# #LW$Date <- format(as.Date(LW$Date), format="%Y-%m-%d"),"%d/%m/%Y")
+# #file2$year <- year(file2$Date, format="%d/%m/%Y")
+# 
+# #LW$month <- month(LW$Date)
+# LW$month<- format(as.Date(LW$Date, format="%d/%m/%Y"),"%m")
+# head(LW)
+# 
+# ggplot(LW)+geom_point(aes(y=weight_g,x=length_cm,colour=as.factor(month)))
+# ggplot(LW)+geom_jitter(aes(y=weight_g,x=length_cm,colour=as.factor(month)))
+# ggplot(LW)+geom_smooth(aes(y=weight_g,x=length_cm,colour=as.factor(month)))
+# ggplot(LW)+geom_density(aes(x=length_cm,colour=as.factor(month))) # you can see length variation by month
+# 
+# 
+# #need to transform bins and dolavs to kg in the landing
+# #1 bin or dolav=350 kg sardine
+# table(LW$Landing_kg)
+# 
+# #transform the landings into kg
+# LW$Landing_kg <- gsub("bins|bin|dolavs|Bins|Dolavs","   ", LW$Landing_kg)
+# table(LW$Landing_kg)
+# LW$Landing_kg <- as.numeric(LW$Landing_kg)*350
+# 
+# 
+# #add sample weight----
+# sample <- with (LW,aggregate(weight_g,list(Date=Date,month=month,year=year,Vessel=Vessel),sum))
+# sample
+# colnames(sample)[5] <- "Wsample_g"
+# 
+# LW <- merge(LW,sample)
+# 
+# head(LW)
+# LW$ID <- paste(LW$Vessel,"Oceanfish",sep="_")
+# 
+# #save file
+# #write.csv(LW, file=paste(out_dir,"PIL_OceanfishLW_2020_vs4.csv",sep="/"),quote=F,row.names = F)# until 26/11/2020
+
+# 
+# # ===================================================--
+# # 4. PIL COOMBEFISHERIES----
+# # ===================================================--
+# ##reading directly the fils in the formt they've send them
+# inp_dir_cf <- file.path(getwd(),"Data/Processors/PIL/CoombeFisheries/")
+# list.files(inp_dir_cf)
+# # read excel files
+# myfiles <- list.files(path=inp_dir_cf, pattern="*.xlsx", recursive = FALSE, full.names = FALSE, include.dirs=F)
+# 
+# 
+# ## Extract Length-Weight Data from the processors files
+# mydata <- list()
+# for(i in 1:length(myfiles)){
+#   # temporary object with sheetnames
+#   temp <- unlist(getSheetNames(paste(inp_dir_cf,myfiles[i], sep="/")))
+#   # if less than 3 sheets, issue a warning and move on to next iteration
+#   if(length(temp)>2) {
+#     mydata[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetName=temp[1],header=F)} else {
+#       warning('Check ', myfiles[i], ": sheet LW might be missing")}
+# }
+# 
+# #mydata <- mapply(cbind, mydata, "SampleID"=myfiles, SIMPLIFY=F)
+# #mydata <- data.table(do.call(rbind.data.frame, mydata))
+# 
+# #for anchovies they only weight them, so we don't have lengths
+# 
+# # Extract date (should be in dd/mm/yyyy format in the original file)
+# dates <- list()
+# for(i in 1:length(myfiles)){
+#   dates[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetIndex=1, startRow=1, rowIndex = 1, header=F, colIndex = 2)
+#   if(is.na(dates[[myfiles[i]]])) dates[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetIndex=1, startRow=1, rowIndex = 1, header=F, colIndex = 2) 
+# } 
+# 
+# dates <- mapply(cbind, dates, "SampleID"=myfiles, SIMPLIFY=F) 
+# dates <- data.table(do.call(rbind.data.frame, dates))
+# dates <- as.data.frame(dates)
+# 
+# # Extract vessel
+# vessel <- list()
+# for(i in 1:length(myfiles)){
+#   vessel[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetIndex=1, startRow=1, rowIndex = 1, header=F, colIndex = 25)
+#   if(is.na(vessel[[myfiles[i]]])) vessel[[myfiles[i]]] <- xlsx::read.xlsx(paste(inp_dir_cf,myfiles[i], sep="/"), sheetIndex=1, startRow=1, rowIndex = 1, header=F, colIndex = 25) 
+# } 
+# vessel <- mapply(cbind, vessel, "SampleID"=myfiles, SIMPLIFY=F)
+# vessel <- data.table(do.call(rbind.data.frame, vessel))
+# vessel <- as.data.frame(vessel)
+# 
+# mydata2 <-mydata 
+# #mydata2$`21210819.xlsx`
+# 
+# # Extract the weight(g) of the individuals (they can be in 3 different columns)
+# llista <- list()
+# for(i in 1:length(mydata2)){
+#   llista[[i]] <- mydata2[[i]][rowSums(is.na(mydata2[[i]][,0:ncol(mydata2[[i]])]))<ncol(mydata2[[i]]),c(2,18,40,62)]
+# }
+# 
+# for(i in 1:length(llista)){
+#   llista[[i]] <- llista[[i]][c(3:48),]
+# }
+# 
+# 
+# llista <- mapply(cbind, llista, "SampleID"=myfiles, SIMPLIFY=F)
+# llista <- data.table(do.call(rbind.data.frame, llista))
+# llista <- as.data.frame(llista)
+# 
+# head(dates)
+# head(llista)
+# llista <- merge(dates,llista,by=c("SampleID"))
+# names(llista) <- c("SampleID","date","todel","X18","X40","X62")
+# 
+# # tidyr library to reorder the database
+# library(tidyr)
+# tb <- as_tibble(llista, stringsAsFactors = FALSE)
+# tb
+# 
+# tb2 <- tb %>%
+#   pivot_longer(
+#     X18:X62,
+#     names_to = "variable",
+#     values_to = "weight",
+#     values_drop_na = TRUE
+#   )
+# 
+# #View(tb2)
+# head(tb2)
+# 
+# tb3 <- tb2 %>%
+#   separate(weight, c("w1", "w2"), 2)
+# tb3
+# #View(tb3)
+# 
+# tb3 <- as.data.frame(tb3)
+# str(tb3)
+# 
+# table(tb3$w2)# some of the columns have more than 2 values, need to split
+# table(tb3$SampleID)
+# tb3$SampleID <- gsub(" ", "",tb3$SampleID)
+# 
+# table(tb3$date,tb3$SampleID)
+# tb3$date <- substr(tb3$SampleID,3,10)
+# #tb3$date[tb3$date==".10.20AN"] <- "28.10.20"
+# table(tb3$date)
+# tb3$date <- as.Date(tb3$date,"%d.%m.%y")
+# 
+# tb3 <- tb3[,c("w1","w2","date")]
+# 
+# w1 <- tb3[,c("w1","date")]
+# w2 <- tb3[,c("w2","date")]
+# 
+# head(w1)
+# w1$w1 <- as.numeric(w1$w1)
+# w1$w1[w1$w1=="11"] <- "119"
+# str(w1)
+# w1$w1 <- as.numeric(as.character(w1$w1))
+# plot(w1$w1)
+# 
+# # w2$w2 <- gsub("[^0-9]","",w2)
+# head(w2)
+# table(w2$w2)
+# w2$w2[w2$w2=="9  52"] <- "52"
+# w2$w2[w2$w2=="77  49"] <- "49"
+# w2$w2 <- as.numeric(w2$w2)
+# plot(w2$w2)
+# 
+# 
+# #also from tydr library
+# #w3 <- separate_rows(w2, w2, convert = TRUE)
+# #View(w3)
+# #w3 <- drop_na(w3)
+# 
+# head(w1);dim(w1)
+# head(w2);dim(w2)
+# #w3 <- as.data.frame(w3)
+# colnames(w2) <- c("w1","date")
+# w4 <- rbind(w1,w2)
+# 
+# head(w4);dim(w4)
+# w4$month <- month(w4$date)
+# w4$year <- year(w4$date)
+# table(w4$month)
+# 
+# #add sample weight----
+# w4$w1 <- as.numeric(as.character(w4$w1))
+# summary(w4$w1) #need to transform the NA in zeros
+# w4$w1[is.na(w4$w1)] <- 0
+# sample <- with (w4,aggregate(w1,list(date=date,month=month,year=year),sum))
+# sample
+# colnames(sample)[4] <- "Wsample_g"
+# 
+# w4 <- merge(w4,sample)
+# 
+# #format it
+# head(w4)
+# w4$species <- "PIL"
+# w4$vessel <- "GIRLRONA"
+# w4$processor <- "CombeeFisheries"
+# w4$source <- "processor"
+# w4$landing_kg <- ""
+# w4$length_cm <- ""
+# 
+# w4 <- w4[,c("date","month","year","species","vessel","landing_kg","length_cm","w1","Wsample_g","processor","source")]
+# colnames(w4) <- c("date","month","year","species","vessel","landing_kg","length_cm","Weight_g","Wsample_g","processor","source")
+# 
+# #save the aggregated data and ready to start the analysis
+# #write.csv(w4, file=paste(out_dir,"final/PIL_CoombeFisheriesW_vs2.csv",sep="/"),quote=F,row.names = F)
+# ######################################################################################################################--
 
 # ===================================================--
 # 5. PIL LANDINGS (Gus)----
