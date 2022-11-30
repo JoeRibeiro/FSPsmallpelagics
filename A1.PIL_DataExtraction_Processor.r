@@ -6,7 +6,10 @@
 # ===================================================--
 # 0. Set directories----
 # ===================================================--
-setwd('C:/Users/JR13/Downloads/2021FSP/')
+
+
+
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics/")
 rm(list=ls())
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
