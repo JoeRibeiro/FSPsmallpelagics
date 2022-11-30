@@ -3,7 +3,9 @@
 # 17-02-2021; last modified 09/09/2022
 #---------------------------------------------------------------------## 
 
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics/")
 rm(list=ls())
+
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
 plot_dir <- file.path(getwd(), "Data/plots/PIL")
@@ -14,6 +16,16 @@ list.files(out_dir,recursive=TRUE) # recursive TRUE to see inside the different 
 packages <- c("ggplot2","data.table","xlsx","openxlsx","dplyr","readxl","stringr","plyr","tidyr","reshape2",
               "maps","mapdata","mapproj","mapplots","lubridate","rgdal","raster","GISTools","ggspatial","XLConnect",
               "openxlsx","sjmisc","viridis","ggpubr")
+
+lib <- function(packages){ 
+  installed_packages <- packages %in% rownames(installed.packages())
+  if (any(installed_packages == FALSE)) {
+    install.packages(packages[!installed_packages])
+  }
+  # Packages loading
+  invisible(lapply(packages, library, character.only = TRUE))
+  
+}
 
 lib(packages) #install packages through own function
 
@@ -59,7 +71,7 @@ db$sel <- db$processor
 
 plot1.TL1 <- list()
 plot1.TL2 <- list()
-#plot1.TL3 <- list()
+plot1.TL3 <- list()
 
 for(i in 1:length(var)){
   
@@ -215,7 +227,7 @@ for(i in 1:length(var)){
 
 print(SP_LWrel[[1]])
 print(SP_LWrel[[2]])
-print(SP_LWrel[[3]])
+#print(SP_LWrel[[3]])
 
 
 # ===================================================--
