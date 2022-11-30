@@ -3,7 +3,7 @@
 # 17-02-2021; last modified 09/09/2022
 #---------------------------------------------------------------------## 
 
-setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics/")
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
 rm(list=ls())
 
 # set input, output directories
@@ -236,7 +236,7 @@ print(SP_LWrel[[2]])
 
 head(pilproc)
 
-db2 <- subset(pilproc,processor=="Interfish")
+db2 <- subset(pilproc,processor=="INTERFISH")
 summary(db2)
 
 db <- db2
@@ -299,8 +299,7 @@ for(i in 1:length(var)){
          plot = SP_LWrel[[i]], width = 25, 
          height = 20, units = "cm", dpi = 300, type = "cairo-png") 
   
-  composition <- ggarrange(SP_LWrel[[1]],SP_LWrel[[2]],SP_LWrel[[3]],SP_LWrel[[4]],SP_LWrel[[5]],
-                           SP_LWrel[[6]],nrow=2,ncol=3)
+  composition <- ggarrange(SP_LWrel[[1]],SP_LWrel[[2]],nrow=2,ncol=1)
   
   ggsave(filename = paste(plot_dir,paste("Interfishallmonths",species,"LWrel.png",sep="_"),sep="/"), 
          plot = composition, width = 25, 
@@ -310,8 +309,7 @@ for(i in 1:length(var)){
 
 
 
-ggarrange(SP_LWrel[[1]],SP_LWrel[[2]],SP_LWrel[[3]],SP_LWrel[[4]],SP_LWrel[[5]],
-          SP_LWrel[[6]],nrow=2,ncol=3)
+ggarrange(SP_LWrel[[1]],SP_LWrel[[2]],SP_LWrel[[3]],SP_LWrel[[4]],nrow=2,ncol=3)
 
 
 
@@ -320,8 +318,8 @@ print(SP_LWrel[[1]])
 print(SP_LWrel[[2]])
 print(SP_LWrel[[3]])
 print(SP_LWrel[[4]])
-print(SP_LWrel[[5]])
-print(SP_LWrel[[6]])
+# print(SP_LWrel[[5]])
+# print(SP_LWrel[[6]])
 
 
 #another visualization
@@ -444,7 +442,7 @@ for(i in 1:length(var)){
 
 print(SP_NONLWrel[[1]])
 print(SP_NONLWrel[[2]])
-print(SP_NONLWrel[[3]])
+#print(SP_NONLWrel[[3]])
 
 
 # ===================================================--
@@ -462,7 +460,7 @@ summary(pilproc$length_cm)
 #explore the data visually
 
 ## a) length----
-#library("ggpubr")
+library("ggpubr")
 ggboxplot(pilproc, x = "processor", y = "length_cm", 
           color = "processor", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
           order = c("OCEANFISH", "FALFISH", "INTERFISH"),
@@ -480,7 +478,8 @@ boxplot(length_cm ~ processor, data = pilproc,
         frame = FALSE, col = c("#00AFBB", "#E7B800", "#FC4E07"))
 boxplot(pilproc$length_cm~pilproc$processor)
 
-#library("gplots")
+#install.packages("gplots")
+library("gplots")
 plotmeans(length_cm ~ processor, data = pilproc, frame = FALSE,
           xlab = "length", ylab = "processor",
           main="Mean Plot with 95% CI") 
@@ -728,7 +727,7 @@ interfat <- read.csv(paste(out_dir,"PIL_Interfish_fat.csv",sep="/"))
 head(interfat)
 interfat$date <- as.Date(interfat$date)
 
-summary(interfat2)
+summary(interfat)
 interfat <- interfat[!is.na(interfat$fat),]
 
 

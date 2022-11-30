@@ -9,7 +9,7 @@
 
 
 
-setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics/")
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
 rm(list=ls())
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Processors/PIL/")

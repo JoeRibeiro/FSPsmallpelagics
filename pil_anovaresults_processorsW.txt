@@ -1,0 +1,5 @@
+              Df  Sum Sq Mean Sq F value   Pr(>F)    
+processor      1   12731   12731   49.39 2.28e-12 ***
+Residuals   7549 1945889     258                     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

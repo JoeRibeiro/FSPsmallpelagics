@@ -1,0 +1,9 @@
+  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = weight_g ~ processor, data = pilproc)
+
+$processor
+                       diff       lwr       upr p adj
+INTERFISH-FALFISH -2.877248 -3.679809 -2.074687     0
+
