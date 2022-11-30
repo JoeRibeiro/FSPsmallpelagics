@@ -2,14 +2,27 @@
 #@silvia Rodriguez Climent
 # 09-11-2020; last modified 09/09/2022
 #---------------------------------------------------------------------##
+
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
 rm(list=ls())
 
 #.rs.restartR();#xlcFreeMemory();#gc() #see memmory used
 #options(java.parameters = "-Xmx1000m")  ## memory set to 2 GB
-install.packages("rlang")
+#install.packages("rlang")
 
 packages <- c("XLConnect", "rJava","ggplot2","data.table","xlsx","openxlsx","dplyr","readxl","stringr","plyr",
               "tidyr","reshape2", "maps","mapdata","mapproj","mapplots","lubridate","rgdal","raster","ggspatial")
+
+
+lib <- function(packages){ 
+  installed_packages <- packages %in% rownames(installed.packages())
+  if (any(installed_packages == FALSE)) {
+    install.packages(packages[!installed_packages])
+  }
+  # Packages loading
+  invisible(lapply(packages, library, character.only = TRUE))
+  
+}
 
 
 lib(packages)
