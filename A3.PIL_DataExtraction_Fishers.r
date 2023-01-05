@@ -42,7 +42,9 @@ lib(packages)
 #inp_dir <- file.path(getwd(), "Data/Fishers/")
 #try with the 2021 data for the moment
 
-inp_dir <- "C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2122/Data/Fishers/"
+# set input, output directories
+inp_dir <- file.path(getwd(), "Data/Fishers//")
+#inp_dir <- "C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2122/Data/Fishers/"
 out_dir <- file.path(getwd(), "Data/Output/")
 list.files(inp_dir)
 
@@ -59,7 +61,8 @@ species <- "PIL"
 list.files(inp_dir)
 #temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2021_vs5.xlsx", sep="/"))) #does not work
 #getSheetNames("C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2021/Data/Fishers/FSP_Database_Fishers2021_vs5.xlsx")
-temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2122.xlsx", sep="")))
+temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2122.xlsx", sep=""))) 
+# This excel spreadsheet was broken as two column names were unseparated, causing an NA column
 
 sheetLOG <- temp[grepl("^LB", temp)]
 # Before reading them in, make sure shooting and hauling time are in time format in excel and that there are no comments in those columns.
@@ -107,12 +110,12 @@ table(LOGc$month,LOGc$year,LOGc$fishingseason)
 # If necessary, add space between degree minutes seconds
 
 head(LOGc);str(LOGc)
-table(LOGc$Latitude);table(LOGc$Longitue)
+table(LOGc$Latitude);table(LOGc$Longitude)
 
 LOGc$LAT1 <- sub("\\s+$", "", gsub('(.{2})', '\\1 ',LOGc$Latitude))
 table(LOGc$LAT1)
 
-LOGc$LON1 <- sub("\\s+$", "", gsub('(.{2})', '\\1 ',paste0("0",LOGc$Longitue,sep="")))
+LOGc$LON1 <- sub("\\s+$", "", gsub('(.{2})', '\\1 ',paste0("0",LOGc$Longitude,sep="")))
 table(LOGc$LON1)
 
 ##Decimal Degrees = degrees + (min/60) + (sec/3600)
@@ -123,8 +126,8 @@ table(LOGc$lat)
 table(LOGc$lon)
 
 plot(lat~lon,LOGc)
-library(EchoR)
-coast()
+# library(EchoR)
+# coast()
 
 
 #link with the code that you already had
@@ -152,18 +155,22 @@ gClip <- function(shp, bb){
   gIntersection(shp, b_poly, byid = TRUE)
 }
 
+library(rnaturalearth) # For coastlines
+worldcoastlines <- ne_countries(scale = "medium", returnclass = "sf")
+    
+    
 # Load europe coastline
-wmap <- raster::shapefile("C:/Users/SRC01/OneDrive - CEFAS/01. PELTIC/Maps Peltic/Europe//EuropeESRI_high.shp")
+# wmap <- raster::shapefile("C:/Users/SRC01/OneDrive - CEFAS/01. PELTIC/Maps Peltic/Europe//EuropeESRI_high.shp")
 #mybox <- matrix(c(-6,50,0,51.5), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max")))#whole cornish peninsula
 mybox <- matrix(c(-6,49.8,-1,51.5), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max")))#little zoom cornish peninsula
 #mybox <- matrix(c(-4.0,49.75,-2.0,51.0), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max"))) #Lyme bay
 
 # clip spatialLines
-ec_map <- gClip(wmap, mybox)
-ec <- df_spatial(ec_map)
+#ec_map <- gClip(wmap, mybox)
+#ec <- df_spatial(ec_map)
 
 ggplot()+
-  geom_polygon(data=ec_map,aes(x=long,y=lat,group=group),col="black")+
+  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_point(data=df,aes(x=lon,y=lat),col="red",size=2)+
   theme_bw(20)+ ylab("Latitude")+xlab("Longitude")
 
@@ -182,12 +189,12 @@ colnames(df2) <- c("vessel","reg","skipper","date","lat","lon","depth","pil","an
 
 head(df2);dim(df2) #383 25
 summary(df2)
-df2[is.na(df2)] <- 0
+#df2[is.na(df2)] <- 0
 
 #remove NA's
 row.has.na <- apply(df2, 1, function(x){any(is.na(x))})
 sum(row.has.na) #totes les rows tenen NA per tant no les puc eliminar
-#final.filtered <- df2[!row.has.na,]
+final.filtered <- df2[!row.has.na,]
 summary(final.filtered)
 
 #save it
@@ -210,7 +217,7 @@ df3[is.na(df3)] <- 0
 # *****************************************************--
 #######################################################--
 
-app <- read.csv(paste("C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2122/Data/Fishers/","CEFAS Production CatchReport_Combined_corr.csv",sep=""))
+app <- read.csv(paste(inp_dir,"CEFAS Production CatchReport_Combined.csv",sep=""))
 
 #select only the fishers from group 2
 #Fisher.ID FM0000007 = VESTA  // Fisher.ID FM0000008 = LYONESSE // Fisher.ID FM0000009 = GIRLRONA (SPRAT)
@@ -266,8 +273,14 @@ table(app$lat2)
 table(app$lon2)
 
 plot(lat2~lon2,app)
-library(EchoR)
-coast()
+# library(EchoR)
+# coast()
+
+
+ggplot()+
+  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
+  geom_point(data=app,aes(x=lon2,y=lat2),col="red",size=2)+
+  theme_bw(20)+ ylab("Latitude")+xlab("Longitude")
 
 
 #select appropriate columns
