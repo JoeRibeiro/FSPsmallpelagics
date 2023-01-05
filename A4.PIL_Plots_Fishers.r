@@ -2,8 +2,19 @@
 #@silvia Rodriguez Climent
 # 01-03-2021; last modified 09/09/2022
 #---------------------------------------------------------------------## 
-
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
 rm(list=ls())
+
+lib <- function(packages){ 
+  installed_packages <- packages %in% rownames(installed.packages())
+  if (any(installed_packages == FALSE)) {
+    install.packages(packages[!installed_packages])
+  }
+  # Packages loading
+  invisible(lapply(packages, library, character.only = TRUE))
+  
+}
+
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Fishers/PIL/")
 plot_dir <- file.path(getwd(), "Data/plots/PIL")
@@ -29,7 +40,7 @@ species <- "PIL"
 
 # File produced in script: A3. PIL_DataExtraction_Fishers #
 
-pilfish <- read.table(paste(out_dir,"/PIL_LBfishers_2122(3).csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
+pilfish <- read.table(paste(out_dir,"/PIL_LBfishers_2122(2).csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
 head(pilfish);dim(pilfish) # 472 25
 
 piltl <- read.table(paste(out_dir,"/PIL_TLfishers_2122.csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
@@ -341,14 +352,23 @@ bycacth3
 # ===================================================--
 
 # Load europe coastline
-wmap <- raster::shapefile("C:/Users/SRC01/OneDrive - CEFAS/01. PELTIC/Maps Peltic/Europe//EuropeESRI_high.shp")
+#wmap <- raster::shapefile("C:/Users/SRC01/OneDrive - CEFAS/01. PELTIC/Maps Peltic/Europe//EuropeESRI_high.shp")
 #mybox <- matrix(c(-6,50,0,51.5), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max")))#whole cornish peninsula
 mybox <- matrix(c(-6,50,-1,51.5), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max")))#little zoom cornish peninsula
 #mybox <- matrix(c(-4.0,49.75,-2.0,51.0), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max"))) #Lyme bay
 
 # clip spatialLines
-ec_map <- gClip(wmap, mybox)
-ec <- df_spatial(ec_map)
+#ec_map <- gClip(wmap, mybox)
+#ec <- df_spatial(ec_map)
+
+library(rnaturalearth) # For coastlines
+worldcoastlines <- ne_countries(scale = "medium", returnclass = "sf")
+  
+# ggplot()+
+#   geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
+#   geom_point(data=df,aes(x=lon,y=lat),col="red",size=2)+
+#   theme_bw(20)+ ylab("Latitude")+xlab("Longitude")
+
 
 # First create dataframe
 head(pilfish)
@@ -375,11 +395,12 @@ LOG$hom <- as.numeric(as.factor(LOG$hom))
 
 LOG1 <- LOG[!(LOG$lat==0|LOG$lon==0),]
 
-P_All_MapHaul <-ggplot(ec, aes(x,y, group=part_id)) + 
+P_All_MapHaul <-ggplot() + 
+  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_polypath(col="black")+ylab("Lat") + xlab("Lon") + theme_bw(20)+
   geom_scatterpie(data=LOG1, aes(x=lon, y=lat, group=as.factor(vessel)), 
                   cols=c("spr", "pil", "ane", "her", "mac", "hom"), 
-                  alpha=0.5,legend_name = "species",pie_scale = 1.5) + coord_equal() +
+                  alpha=0.5,legend_name = "species",pie_scale = 1.5) +
   facet_wrap(.~month,nrow=3) 
 
 P_All_MapHaul
@@ -394,15 +415,15 @@ P_All_MapHaul
 
 # Load europe coastline
 #wmap <- raster::shapefile("X:/Current3rdPartyData/GeodataShapefiles/Coastlines/Europe/EuropeESRI_high.shp")#from GIS server (slower)
-wmap <- raster::shapefile("C:/Users/SRC01/OneDrive - CEFAS/01. PELTIC/Maps Peltic/Europe//EuropeESRI_high.shp")
+#wmap <- raster::shapefile("C:/Users/SRC01/OneDrive - CEFAS/01. PELTIC/Maps Peltic/Europe//EuropeESRI_high.shp")
 mybox <- matrix(c(-6.5,49.5,-2.0,51.5), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max")))#whole cornish peninsula
 #mybox <- matrix(c(-6.0,49.7,0.0,51.5), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max")))#whole cornish peninsula
 #mybox <- matrix(c(-3.6,47.0,-3.0,51.0), nrow = 2, ncol = 2, dimnames = list(c("x","y"), c("min","max"))) #lyme bay
 
 # clip spatialLines
-ec_map <- gClip(wmap, mybox)
-ec <- df_spatial(ec_map)
-plot(ec_map)
+#ec_map <- gClip(wmap, mybox)
+#ec <- df_spatial(ec_map)
+#plot(ec_map)
 
 # Isolate data for Sardine
 LOG1
@@ -432,28 +453,30 @@ dim(PIL_hauls_pos)
 PIL_hauls_pos <- subset(PIL_hauls_pos,!(lon>-4 & vessel=="LYONESSE"))
 
 #select vessel
-vess1 <- subset(PIL_hauls_pos2,vessCode=="vess4") #only 5 vessels this year
+vess1 <- subset(PIL_hauls_pos,vessCode=="vess4") #only 5 vessels this year
 #a) one vessel----
-MapHaulv1 <- ggplot(ec, aes(x,y, group=part_id)) + 
+MapHaulv1 <- ggplot() +
+  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_polypath(col="black") +
   guides(fill=FALSE) + ylab("Lat") + xlab("Lon") +
   theme_bw(25) +
   geom_point(data=vess1, aes(lon, lat, group=factor(month), size=pil/1000,fill=factor(month), col=factor(month),alpha=0.3))+
-  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) +
+#  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) +
   scale_color_discrete(name = "Month", labels=c(levels(vess1$month)))+
   scale_size_continuous(range = c(min(vess1$pil/1000),max(vess1$pil/1000)), name = "Catch (t)")
 MapHaulv1
 
-#ggsave(filename=paste(plot_dir,paste(species,unique(vess1$vessel),"MapHauls.png",sep="_"),sep="/"),plot=MapHaulv1,width=30,height=20,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,unique(vess1$vessel),"MapHauls.png",sep="_"),sep="/"),plot=MapHaulv1,width=30,height=20,units="cm",dpi=200,type="cairo-png")
 
 
 #b) all vessels----
-MapHaul <- ggplot(ec, aes(x,y, group=part_id)) + 
+MapHaul <- ggplot() + 
+  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_point(data=PIL_hauls_pos, aes(lon, lat, group=factor(month),alpha=0.8,size=pil/1000,fill=factor(month), col=factor(month)))+
   geom_polypath(col="black") +
   guides(fill=FALSE) + ylab("Lat") + xlab("Lon") +
   theme_bw(22) +
-  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
+#  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
   scale_color_discrete(name = "Month", labels=c(levels(PIL_hauls_pos$month)))+
   scale_size_continuous(range = c(min(PIL_hauls_pos$pil/1000),max(PIL_hauls_pos$pil/1000)), name = "Catch (t)")+
   facet_grid(~vessCode)+theme(legend.position = "bottom")+
@@ -462,11 +485,12 @@ MapHaul <- ggplot(ec, aes(x,y, group=part_id)) +
 MapHaul
 
 #c) better visualization----
-MapHaul <- ggplot(ec, aes(x,y, group=part_id)) + 
+MapHaul <- ggplot() + 
+  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_point(data=PIL_hauls_pos, aes(lon, lat,group=factor(month),alpha=0.8,size=pil/1000,fill=factor(month), col=factor(month)))+
   geom_polypath(col="black") +guides(fill=FALSE)+
   theme_bw(22) +
-  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
+#  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
   scale_color_discrete(name = "Month", labels=c(levels(PIL_hauls_pos$month)))+
   scale_size_continuous(name = "Catch (t)",range = c(min(PIL_hauls_pos$pil/1000),(max(PIL_hauls_pos$pil/1000))))+
   facet_grid(~vessCode)+theme(legend.position = "bottom")+
@@ -480,11 +504,12 @@ MapHaul2 <- MapHaul+scale_size(range=c(0,30))+ scale_size_continuous(name = "Cat
 
 
 #d) by month/vessel----
-MapHaul3 <- ggplot(ec, aes(x,y, group=part_id)) + 
+MapHaul3 <- ggplot() + 
+  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_polypath(col="black") +guides(fill=FALSE)+
   theme_bw(22) +
   geom_point(data=PIL_hauls_pos, aes(lon, lat,group=factor(month),alpha=0.8,size=pil/1000,fill=factor(month), col=factor(month)))+
-  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
+#  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
   scale_color_discrete(name = "Month", labels=c(levels(PIL_hauls_pos$month)))+
   scale_size_continuous(name = "Catch (t)",range = c(min(PIL_hauls_pos$pil/1000),(max(PIL_hauls_pos$pil/1000))))+
   facet_grid(vessCode~month)+theme(legend.position = "bottom")+
@@ -495,11 +520,12 @@ MapHaul3.2 <- MapHaul3+scale_size(range=c(0,30))+ scale_size_continuous(name = "
 
 
 #e) rows
-MapHaul4 <- ggplot(ec, aes(x,y, group=part_id)) + 
+MapHaul4 <- ggplot() + 
+  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_point(data=PIL_hauls_pos, aes(lon, lat,group=factor(month),alpha=0.8,size=pil/1000,fill=factor(month), col=factor(month)))+
   geom_polypath(col="black") +guides(fill=FALSE)+
   theme_bw(22) +
-  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
+#  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
   scale_color_discrete(name = "Month", labels=c(levels(PIL_hauls_pos$month)))+
   scale_size_continuous(name = "Catch (t)",range = c(min(PIL_hauls_pos$pil/1000),(max(PIL_hauls_pos$pil/1000))))+
   facet_wrap(vessCode~.,nrow=2)+theme(legend.position = "bottom")+
@@ -548,6 +574,7 @@ MapHaul4.1
 db_inp <- "C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP_database/PIL/Output/"
 list.files(db_inp)
 
+# This section brings in PIL_agg2122.csv which is created at the end of script A5, So these scripts are out of sequence it seems?
 db <- read.table(paste(db_inp,"PIL_agg2122.csv",sep=""),sep=",",header=T, stringsAsFactors = F)
 head(db);dim(db) #1293 13
 summary(db)
