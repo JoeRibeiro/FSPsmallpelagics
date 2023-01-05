@@ -62,7 +62,7 @@ list.files(inp_dir)
 #temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2021_vs5.xlsx", sep="/"))) #does not work
 #getSheetNames("C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2021/Data/Fishers/FSP_Database_Fishers2021_vs5.xlsx")
 temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2122.xlsx", sep=""))) 
-# This excel spreadsheet was broken as two column names were unseparated, causing an NA column
+# This excel spreadsheet was broken as two column names were unseparated, causing an NA column, and longitude was misspelt as longitue. I corrected this in the excel file as well as in the script (which expected longitue)
 
 sheetLOG <- temp[grepl("^LB", temp)]
 # Before reading them in, make sure shooting and hauling time are in time format in excel and that there are no comments in those columns.
