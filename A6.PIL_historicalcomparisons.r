@@ -4,15 +4,20 @@
 #---------------------------------------------------------------------## 
 
 # set input, output directories
-inp_dir <- "C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP_database/PIL/Output/"
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
+inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
+
 list.files(inp_dir)
 plot_dir <- file.path(getwd(), "plots/PIL/Historic_comp/")
+out_dir <- file.path(getwd(), "Data/Output/")
 
 #libraries
-library(ggplot2);library(lubridate); library(ggpubr); library(data.table); library(dplyr)
+library(ggplot2);library(lubridate); library(ggpubr); library(data.table); library(dplyr); library(gplots)
 
 #read files
-db<- read.csv(paste(inp_dir,"PIL_db_agg171819202122.csv",sep=""),sep=",",header=T, stringsAsFactors = F)
+db<- read.csv(paste(out_dir,"PIL_agg2122.csv",sep="/"),sep=",",header=T, stringsAsFactors = F) # We don't have a file called PIL_db_agg anywhere?
+
+
 head(db);dim(db) #15706 13
 
 ###########################################################################################################################--
@@ -48,31 +53,31 @@ plotmeans(length_cm ~ source, data = db, frame = FALSE,
 head(db);str(db)
 
 sum1 <- db %>% 
-  dplyr::group_by(fishingseason)%>%
+  dplyr::group_by(fishing_season)%>%
   dplyr::summarize(meanL=mean(length_cm),
                    minL=min(length_cm),
                    maxL=max(length_cm),
-                   N=sum(n))
+                   N=sum(N))
 
 sum2 <- db %>% 
-  dplyr::group_by(fishingseason,month)%>%
+  dplyr::group_by(fishing_season,month)%>%
   dplyr::summarize(meanL=mean(length_cm),
                    minL=min(length_cm),
                    maxL=max(length_cm),
-                   N=sum(n))
+                   N=sum(N))
 
 sum3 <- db %>% 
-  dplyr::group_by(fishingseason,month,source)%>%
+  dplyr::group_by(fishing_season,month,source)%>%
   dplyr::summarize(meanL=mean(length_cm),
                    minL=min(length_cm),
                    maxL=max(length_cm),
-                   N=sum(n))
+                   N=sum(N))
 
 
 #aggregate data
-tlyear <- with(db,aggregate(n,list(length_cm=length_cm,month=month,year=year,fishingseason=fishingseason),sum))
-tlyearsource <- with(db,aggregate(n,list(length_cm=length_cm,year=year,source=source,fishingseason=fishingseason),sum))
-tlyearsourceM <- with(db,aggregate(n,list(length_cm=length_cm,month=month,year=year,source=source,fishingseason=fishingseason),sum))
+tlyear <- with(db,aggregate(N,list(length_cm=length_cm,month=month,year=year,fishingseason=fishing_season),sum))
+tlyearsource <- with(db,aggregate(N,list(length_cm=length_cm,year=year,source=source,fishingseason=fishing_season),sum))
+tlyearsourceM <- with(db,aggregate(N,list(length_cm=length_cm,month=month,year=year,source=source,fishingseason=fishing_season),sum))
 
 all_cum <- as.data.table(tlyear)
 all_cum2 <- as.data.table(tlyearsource)
@@ -224,7 +229,7 @@ all.TL5
 ## 1.3 LFD by month,source and fishingseason----
 
 #fishers
-data <- all_cumMonth[source=="fisher"]
+data <- all_cumMonth[source=="fishers"]
 
 all.TL5 <- ggplot(data, aes(TL,Freq, fill=month)) +
   geom_bar(stat="identity",position=position_dodge(2),width=0.45,alpha=1) + 
@@ -271,7 +276,7 @@ all.TL6
 #split in two plots for better visualization
 table(data$fishingseason)
 
-data1 <- subset(data,fishingseason%in%c("2017-2018","2018-2019"))
+data1 <- subset(data,fishingseason %in% c("2021-2022","2018-2019"))
 all.TL7 <- ggplot(data1, aes(TL,Freq, fill=month)) +
   geom_bar(stat="identity",position=position_dodge(2),width=0.45,alpha=1) + 
   #theme_bw(25) + scale_y_continuous(limits=c(0,max(data$Freq)+10), expand=c(0,0)) + 
@@ -312,9 +317,9 @@ all.TL8
 
 ## 1.4 Total catch (from the processors)----
 
-head(db):str(db)
+#head(db):str(db)
 
-Catch <- with(db,aggregate(totalcatch_kg,list(vessel=vessel,month=month,year=year,fishingseason=fishingseason),sum))
+Catch <- with(db,aggregate(totalcatch_kg,list(vessel=vessel,month=month,year=year,fishingseason=fishing_season),sum))
 
 Catch$month2 <- Catch$month
 
@@ -350,7 +355,7 @@ T_Catch
 
 #total catch in 3 bits
 table(Catch$vessel)
-Catch1 <- subset(Catch,vessel%in%c("pelagic marksman"))
+Catch1 <- subset(Catch,vessel%in%c("PELAGIC MARKSMAN"))
 
 T_Catch1<- ggplot(Catch1, aes(month2, x/1000, group=vessel, col=vessel)) + geom_line(size=1.2) +geom_point()+
   theme_bw(25) + ylab("tonnes") + xlab("month") + 
@@ -363,8 +368,10 @@ T_Catch1
 #       plot = T_Catch1, width = 40,height = 25, units = "cm", dpi = 300, type = "cairo-png") 
 
 
+
+
 table(Catch$vessel)
-Catch2 <- subset(Catch,vessel%in%c("asthore","charlotte clare","galwad-y-mor","golden harvest","lyonesse"))
+Catch2 <- subset(Catch,vessel%in% c("LYONESSE", "CHARLOTTE CLARE",  "GALWAD-Y-MOR",     "GOLDEN HARVEST"))
 T_Catch2<- ggplot(Catch2, aes(month2, x/1000, group=vessel, col=vessel)) + geom_line(size=1.2) +geom_point()+
   theme_bw(25) + ylab("tonnes") + xlab("month") + 
   theme(legend.position="top",legend.text=element_text(color="black",size=10),
@@ -377,7 +384,7 @@ T_Catch2
 #       plot = T_Catch2, width = 40,height = 25, units = "cm", dpi = 300, type = "cairo-png") 
 
 
-Catch3 <- subset(Catch,vessel%in%c("mayflower","rachel anne","resolute","serene danw","vesta"))
+Catch3 <- subset(Catch,vessel%in% c("RACHEL ANN", "SERENE DAWN"))
 T_Catch3<- ggplot(Catch3, aes(month2, x/1000, group=vessel, col=vessel)) + geom_line(size=1.2) +geom_point()+
   theme_bw(25) + ylab("tonnes") + xlab("month") + 
   theme(legend.position="top",legend.text=element_text(color="black",size=10),
