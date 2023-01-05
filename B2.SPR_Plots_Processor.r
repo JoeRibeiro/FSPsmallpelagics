@@ -182,8 +182,8 @@ for(i in 1:length(var)){
 
 
 print(SP_LWrel[[1]])
-print(SP_LWrel[[2]])
-print(SP_LWrel[[3]])
+#print(SP_LWrel[[2]])
+#print(SP_LWrel[[3]])
 
 
 # ===================================================--
@@ -227,8 +227,8 @@ for(i in 1:length(var)){
 }
 
 print(SP_NONLWrel[[1]])
-print(SP_NONLWrel[[2]])
-print(SP_NONLWrel[[3]])
+#print(SP_NONLWrel[[2]])
+#print(SP_NONLWrel[[3]])
 
 
 ###########################################################################################################################--
@@ -267,17 +267,17 @@ plotmeans(length_cm ~ processor, data = proc, frame = FALSE,
           main="Mean Plot with 95% CI") 
 
 # Compute the analysis of variance
-res.aov <- aov(length_cm ~ processor, data = proc)
+#res.aov <- aov(length_cm ~ processor, data = proc)
 # Summary of the analysis
-summary(res.aov) #significant differences
-capture_a <- summary(res.aov)
+#summary(res.aov) #significant differences
+#capture_a <- summary(res.aov)
 
-TukeyHSD(res.aov)
-capture_t <- TukeyHSD(res.aov)
+#TukeyHSD(res.aov)
+#capture_t <- TukeyHSD(res.aov)
 
 #save it
-capture.output(capture_a, file = "spr_anovaresults_processors.txt")#save the file
-capture.output(capture_t, file = "spr_tuckeyresults_processors.txt")#save the file
+#capture.output(capture_a, file = "spr_anovaresults_processors.txt")#save the file
+#capture.output(capture_t, file = "spr_tuckeyresults_processors.txt")#save the file
 
 
 ##b) weight----
@@ -304,18 +304,18 @@ plotmeans(weight_g ~ processor, data = proc, frame = FALSE,
           xlab = "processor", ylab = "weight",
           main="Mean Plot with 95% CI") 
 
-# Compute the analysis of variance
-res.aov <- aov(weight_g ~ processor, data = proc)
-# Summary of the analysis
-summary(res.aov) #significant differences
-capture_a <- summary(res.aov)
-
-TukeyHSD(res.aov)
-capture_t <- TukeyHSD(res.aov)
-
-#save it
-capture.output(capture_a, file = "spr_anovaresults_processorsW.txt")#save the file
-capture.output(capture_t, file = "spr_tuckeyresults_processorsW.txt")#save the file
+# # Compute the analysis of variance
+# res.aov <- aov(weight_g ~ processor, data = proc)
+# # Summary of the analysis
+# summary(res.aov) #significant differences
+# capture_a <- summary(res.aov)
+# 
+# TukeyHSD(res.aov)
+# capture_t <- TukeyHSD(res.aov)
+# 
+# #save it
+# capture.output(capture_a, file = "spr_anovaresults_processorsW.txt")#save the file
+# capture.output(capture_t, file = "spr_tuckeyresults_processorsW.txt")#save the file
 
 ######----######--
 
