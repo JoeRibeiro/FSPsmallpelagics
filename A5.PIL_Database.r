@@ -3,7 +3,7 @@
 # 12-03-2021; last updated 09/09/2022
 #---------------------------------------------------------------------## 
 
-setwd <-"C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2122/"
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
 plot_dir <- file.path(getwd(), "Data/plots/PIL/")
@@ -53,7 +53,7 @@ names(pilproc_aggrL) <- c("species","date","division","length_cm","N","samplewt_
 list.files(out_dir)
 
 #read latest file logbook
-lbfishers <- read.csv(paste(out_dir,"/PIL_LBfishers_2122(3).csv",sep=""),sep=",",header=T,stringsAsFactors=F)# vs(3) has an error corrected
+lbfishers <- read.csv(paste(out_dir,"/PIL_LBfishers_2122(2).csv",sep=""),sep=",",header=T,stringsAsFactors=F)# vs(3) has an error corrected
 dim(lbfishers)
 
 #read latest file length log
@@ -152,6 +152,6 @@ agg2021 <- agg2021[,c("date","vessel","totalcatch_kg","length_cm","N","samplewt_
 
 
 #write.csv(agg2021,file=paste("C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP_database/PIL/Output","/PIL_agg2122.csv",sep=""),row.names=F)
-#write.csv(agg2021,paste(out_dir,"PIL_agg2021.csv",sep="/"),row.names = F)
+write.csv(agg2021,paste(out_dir,"PIL_agg2122.csv",sep="/"),row.names = F)
 
 ########################################### END ##############################################################################-----
