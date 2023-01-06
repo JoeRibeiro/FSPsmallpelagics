@@ -4,15 +4,18 @@
 #---------------------------------------------------------------------## 
 
 # set input, output directories
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
+
+
 inp_dir <- file.path(getwd(), "Data/Processors/SPR/")
 plot_dir <- file.path(getwd(), "Data/plots/SPR/")
-out_dir <- file.path(getwd(), "Data/Output/final/")
+out_dir <- file.path(getwd(), "Data/Output/")
 
 #libraries
 library(ggplot2);library(lubridate)
 
 #read files
-proc <- read.csv(paste(out_dir,"SPR_processors_2021.csv",sep="/"),sep=",",header=T, stringsAsFactors = F)
+proc <- read.csv(paste(out_dir,"SPR_processors_2022.csv",sep="/"),sep=",",header=T, stringsAsFactors = F)
 
 ###########################################################################################################################--
 # ===================================================--
@@ -57,6 +60,6 @@ proc_aggrL$source <- "processor"
 proc_aggrL <- proc_aggrL[,c("date","vessel","totalcatch_kg","length_cm","n","samplewt_g","sampleID","month","year","source","species","division")]
 
 # write csv
-#write.csv(proc_aggrL,paste(out_dir, "/SPR_proc_2021_aggLNOFISHERS.csv",sep=""),quote=F, row.names = F)
+write.csv(proc_aggrL,paste(out_dir, "/SPR_proc_2021_aggLNOFISHERS.csv",sep=""),quote=F, row.names = F)
 
 ########################################### END ##############################################################################-----

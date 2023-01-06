@@ -301,7 +301,7 @@ table(app$bycatch)
 table(app$species)
 appsprat <- subset(app,species=="Sprat")
 #save it
-#write.csv(appsprat,paste(out_dir,"SPR_LBelectronic.csv",sep="/"),row.names=F)
+write.csv(appsprat,paste(out_dir,"SPR_LBelectronic.csv",sep="/"),row.names=F)
 
 apppil <- subset(app,species=="Sardine")
 head(apppil);dim(apppil) #144 14

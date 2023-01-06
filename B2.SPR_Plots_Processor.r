@@ -4,6 +4,8 @@
 #---------------------------------------------------------------------## 
 
 rm(list=ls())
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
+
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Processors/SPR/")
 plot_dir <- file.path(getwd(), "Data/plots/SPR")

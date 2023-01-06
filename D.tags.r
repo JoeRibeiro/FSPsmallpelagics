@@ -3,21 +3,23 @@
 # 09-02-2021; last modified 09-09-2022
 #---------------------------------------------------------------------##
 
-setwd("C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2122/Data/")
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
+
+# Again we don't have these data. But I think we can anticipate that we will.
 
 # ===================================================--
 # 0. Set directories----
 # ===================================================--
 rm(list=ls())
 # set input, output directories
-inp_dir <- file.path(getwd(), "tags/")
+inp_dir <- file.path(getwd(), "Data/tags/")
 plot_dir <- file.path(getwd(), "plots/tags/")
-out_dir <- file.path(getwd(), "Output/")
+out_dir <- file.path(getwd(), "Data/Output/")
 list.files(inp_dir,recursive=TRUE) # recursive TRUE to see inside the different folders
 
 # load libraries
-sessionInfo()
-library(data.table);library(ggplot2);library(doBy):library(dplyr):library(cowplot);library(rlang)
+#sessionInfo()
+library(data.table);library(ggplot2);library(doBy);library(dplyr);library(cowplot);library(rlang)
 
 # ===================================================--
 # 1. READ DATA ----
@@ -46,91 +48,92 @@ legend("topright", legend=c("max.T", "min.T","max.depth"),
 #dev.copy(png, paste(plot_dir,'/GirlRona_summary_tag.png',sep=""),width=25,height=17,unit='cm',res=300)
 #dev.off()
 
+# Cutting out this section as it seems to relate to a different csv / dataframe than the one currently loaded as tag1:
 
-#all the data
-nrow(tag1)
-
-tag1 <- tag1[131:604930,]
-head(tag1)
-colnames(tag1) <-c("date","pressure","temp")
-tag1$sec <- rep(seq(0,5,1),nrow(tag1)/6)# 10 second resolution
-tag1$date2 <- paste0(tag1$date,":",tag1$sec,"0")
-tag1 <- tag1[,c("date","pressure","temp","DT")]
-#tag1[is.na(tag1)] <- 0
-tag1$pressure <- as.numeric(as.character(tag1$pressure))
-tag1$temp <- as.numeric(as.character(tag1$temp))
-tag1$date2 <- as.POSIXct(tag1$date2,format="%d/%m/%Y %H:%M:%S") # to second level
-tag1$date <- as.Date(substring(tag1$date2,1,10),format="%Y-%m-%d") # to date level
-str(tag1)
-summary(tag1)
-
-tag1.2<- summaryBy(temp + pressure ~ date + vs, data = tag1,
-                   FUN = function(x) { c(m = mean(x), s = sd(x),min=min(x),max=max(x)) } )
-tag1.2$ID <- "GIRLRONA"
-#write.csv(tag1.2, file=paste(out_dir,"/tag1.csv",sep="/"),row.names = F)
-
-#more complicated graph
-tempcol <- "#69b3a2"
-presscol <- "blue"
-data <- tag1.2
-
-a <- ggplot(data,aes(x=date,y=temp.m)) +         
-  geom_line(aes(x=date,y=temp.m),color=tempcol,size=1,alpha=1)+
-  geom_ribbon(aes(x=date,ymin=temp.min,ymax=temp.max,fill=tempcol),alpha=0.1)+
-  geom_line(aes(x=date,y=pressure.m),color=presscol,size=1,alpha=1)+
-  geom_ribbon(aes(x=date,ymin=pressure.min,ymax=pressure.max,fill=presscol),alpha=0.1)+
-  theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
-  scale_fill_manual("",values=c(tempcol,presscol),labels=c("temperature","pressure"))+
-  ggtitle(paste(unique(data$ID),sep="_"))
-a
-
-#ggsave(filename = paste(plot_dir,paste(unique(tag1.2$ID),"tag.png",sep="_"),sep="/"), 
-#       plot = a, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
-
-Accl <- 12 # 2 min delay in start 
-Dep_Thresh <- 2
-tagsum <- data.frame(matrix(ncol=ncol(tag1),nrow=0)) 
-colnames(tagsum) <- colnames(tag1)
-for(date in unique(as.character(tag1$date))){ # loop to create daily summary figure 
-  #date <- unique(as.character(tag1$date))[5]#5
-  
-  if(max(tag1$pressure[which(tag1$date == date)]) >Dep_Thresh){
-    St <- min(which(tag1$pressure[which(tag1$date == date)] > Dep_Thresh))+Accl # extract start of haul with accl
-    En <- max(which(tag1$pressure[which(tag1$date == date)] > Dep_Thresh)) # extract end of haul
-    NR <- tag1[which(tag1$date == date)[St:En],] # new row
-    colnames(NR) <- colnames(tagsum)
-    tagsum <- data.frame(rbind(tagsum,NR))
-    
-    g1 <- ggplot(tag1[which(tag1$date == date),],aes(x=date2,y=temp)) +         
-      geom_line(aes(x=date2,y=temp),color=tempcol,size=1,alpha=1)+
-      theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
-      geom_ribbon(data=NR,aes(xmin=min(date2),xmax=max(date2),y=temp),alpha=0.4)+
-      ggtitle(paste0(unique(data$ID),"_",date)); g1
-    g2 <- ggplot(tag1[which(tag1$date == date),],aes(x=date2,y=temp)) +         
-      geom_line(aes(x=date2,y=-pressure),color=presscol,size=1,alpha=1)+
-      geom_ribbon(data=NR,aes(xmin=min(date2),xmax=max(date2),y=-pressure),alpha=0.4)+
-      theme_bw()+ theme(legend.position="bottom") + ylab("Depth (m)") + xlab("time")+
-      ggtitle(paste0(unique(data$ID),"_",date)); g2
-    plot_grid(g1,g2,ncol=1,align="v")
-    ggsave(paste0(out_dir,"/",paste0(unique(data$ID),"_",date,".png")),height=7,width=8)
-  } else {
-    g1 <- ggplot(tag1[which(tag1$date == date),],aes(x=date2,y=temp)) +         
-      geom_line(aes(x=date2,y=temp),color=tempcol,size=1,alpha=1)+
-      theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
-      ggtitle(paste0(unique(data$ID),"_",date)); g1
-    g2 <- ggplot(tag1[which(tag1$date == date),],aes(x=date2,y=temp)) +         
-      geom_line(aes(x=date2,y=-pressure),color=presscol,size=1,alpha=1)+
-      theme_bw()+ theme(legend.position="bottom") + ylab("Depth (m)") + xlab("time")+
-      ggtitle(paste0(unique(data$ID),"_",date)); g2
-    plot_grid(g1,g2,ncol=1,align="v")
-    ggsave(paste0(out_dir,"/",paste0(unique(data$ID),"_",date,".png")),height=7,width=8)    
-  }
-}
-#write.csv(tagsum,aes(out_dir))
-
-ggplot(data=tagsum)+
-  geom_point(aes(x=pressure,y=temp))
-
+# #all the data
+# nrow(tag1)
+# 
+# tag1 <- tag1[131:604930,]
+# head(tag1)
+# colnames(tag1) <-c("date","pressure","temp")
+# tag1$sec <- rep(seq(0,5,1),nrow(tag1)/6)# 10 second resolution
+# tag1$date2 <- paste0(tag1$date,":",tag1$sec,"0")
+# tag1 <- tag1[,c("date","pressure","temp","DT")]
+# #tag1[is.na(tag1)] <- 0
+# tag1$pressure <- as.numeric(as.character(tag1$pressure))
+# tag1$temp <- as.numeric(as.character(tag1$temp))
+# tag1$date2 <- as.POSIXct(tag1$date2,format="%d/%m/%Y %H:%M:%S") # to second level
+# tag1$date <- as.Date(substring(tag1$date2,1,10),format="%Y-%m-%d") # to date level
+# str(tag1)
+# summary(tag1)
+# 
+# tag1.2<- summaryBy(temp + pressure ~ date + vs, data = tag1,
+#                    FUN = function(x) { c(m = mean(x), s = sd(x),min=min(x),max=max(x)) } )
+# tag1.2$ID <- "GIRLRONA"
+# #write.csv(tag1.2, file=paste(out_dir,"/tag1.csv",sep="/"),row.names = F)
+# 
+# #more complicated graph
+# tempcol <- "#69b3a2"
+# presscol <- "blue"
+# data <- tag1.2
+# 
+# a <- ggplot(data,aes(x=date,y=temp.m)) +         
+#   geom_line(aes(x=date,y=temp.m),color=tempcol,size=1,alpha=1)+
+#   geom_ribbon(aes(x=date,ymin=temp.min,ymax=temp.max,fill=tempcol),alpha=0.1)+
+#   geom_line(aes(x=date,y=pressure.m),color=presscol,size=1,alpha=1)+
+#   geom_ribbon(aes(x=date,ymin=pressure.min,ymax=pressure.max,fill=presscol),alpha=0.1)+
+#   theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
+#   scale_fill_manual("",values=c(tempcol,presscol),labels=c("temperature","pressure"))+
+#   ggtitle(paste(unique(data$ID),sep="_"))
+# a
+# 
+# #ggsave(filename = paste(plot_dir,paste(unique(tag1.2$ID),"tag.png",sep="_"),sep="/"), 
+# #       plot = a, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+# 
+# Accl <- 12 # 2 min delay in start 
+# Dep_Thresh <- 2
+# tagsum <- data.frame(matrix(ncol=ncol(tag1),nrow=0)) 
+# colnames(tagsum) <- colnames(tag1)
+# for(date in unique(as.character(tag1$date))){ # loop to create daily summary figure 
+#   #date <- unique(as.character(tag1$date))[5]#5
+#   
+#   if(max(tag1$pressure[which(tag1$date == date)]) >Dep_Thresh){
+#     St <- min(which(tag1$pressure[which(tag1$date == date)] > Dep_Thresh))+Accl # extract start of haul with accl
+#     En <- max(which(tag1$pressure[which(tag1$date == date)] > Dep_Thresh)) # extract end of haul
+#     NR <- tag1[which(tag1$date == date)[St:En],] # new row
+#     colnames(NR) <- colnames(tagsum)
+#     tagsum <- data.frame(rbind(tagsum,NR))
+#     
+#     g1 <- ggplot(tag1[which(tag1$date == date),],aes(x=date2,y=temp)) +         
+#       geom_line(aes(x=date2,y=temp),color=tempcol,size=1,alpha=1)+
+#       theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
+#       geom_ribbon(data=NR,aes(xmin=min(date2),xmax=max(date2),y=temp),alpha=0.4)+
+#       ggtitle(paste0(unique(data$ID),"_",date)); g1
+#     g2 <- ggplot(tag1[which(tag1$date == date),],aes(x=date2,y=temp)) +         
+#       geom_line(aes(x=date2,y=-pressure),color=presscol,size=1,alpha=1)+
+#       geom_ribbon(data=NR,aes(xmin=min(date2),xmax=max(date2),y=-pressure),alpha=0.4)+
+#       theme_bw()+ theme(legend.position="bottom") + ylab("Depth (m)") + xlab("time")+
+#       ggtitle(paste0(unique(data$ID),"_",date)); g2
+#     plot_grid(g1,g2,ncol=1,align="v")
+#     ggsave(paste0(out_dir,"/",paste0(unique(data$ID),"_",date,".png")),height=7,width=8)
+#   } else {
+#     g1 <- ggplot(tag1[which(tag1$date == date),],aes(x=date2,y=temp)) +         
+#       geom_line(aes(x=date2,y=temp),color=tempcol,size=1,alpha=1)+
+#       theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
+#       ggtitle(paste0(unique(data$ID),"_",date)); g1
+#     g2 <- ggplot(tag1[which(tag1$date == date),],aes(x=date2,y=temp)) +         
+#       geom_line(aes(x=date2,y=-pressure),color=presscol,size=1,alpha=1)+
+#       theme_bw()+ theme(legend.position="bottom") + ylab("Depth (m)") + xlab("time")+
+#       ggtitle(paste0(unique(data$ID),"_",date)); g2
+#     plot_grid(g1,g2,ncol=1,align="v")
+#     ggsave(paste0(out_dir,"/",paste0(unique(data$ID),"_",date,".png")),height=7,width=8)    
+#   }
+# }
+# #write.csv(tagsum,aes(out_dir))
+# 
+# ggplot(data=tagsum)+
+#   geom_point(aes(x=pressure,y=temp))
+# 
 
 ##############################################################################################################--
 ##tag2----
@@ -339,91 +342,93 @@ tag3 <- as.data.frame(tag3)
 subset(tag3,max_depth>"58.0")
 
 
-#common dates
-tag1.3 <- subset(tag1.2,!date=="2020-11-25")
-tag2.3 <- subset(tag2.2,!date=="2021-02-04")
-summary(tag1.3)
-summary(tag2.3)
-
-tag3 <- rbind(tag1.3,tag2.3)
-
-tempcol <- "limegreen"
-presscol <- "green4"
-data <- tag3
-
-d <- ggplot(data,aes(x=date,y=temp.m)) +
-  geom_line(aes(x=date,y=temp.m,color=ID),size=1,alpha=1)+
-  #geom_ribbon(aes(x=date,ymin=temp.min,ymax=temp.max,fill=ID),alpha=0.2)+
-  theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
-  scale_colour_manual("vessel",values=c(tempcol,presscol))+
-  #scale_fill_manual("",values=c(tempcol,presscol))+
-  ggtitle("temperature")
-
-d
-# ggsave(filename = paste(plot_dir,paste("Ttag.png",sep="_"),sep="/"), 
-#        plot = d, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
-
-
-tempcol <- "cyan2"
-presscol <- "slateblue"
-
-e <- ggplot(data,aes(x=date,y=temp.m,group=ID)) +
-  geom_line(aes(x=date,y=pressure.m,color=ID),size=1,alpha=1)+
-  geom_ribbon(aes(x=date,ymin=pressure.min,ymax=pressure.max,fill=ID),fill=presscol,alpha=0.1)+
-  theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
-  scale_colour_manual("vessel",values=c(tempcol,presscol))+
-  scale_fill_manual("",values=c(tempcol,presscol))+
-  ggtitle("hauls")
-
-e
-# ggsave(filename = paste(plot_dir,paste("Ptag.png",sep="_"),sep="/"), 
-#        plot = e, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
-
-
-
-#more complicated graph
-tempcol <- "#69b3a2"
-presscol <- "blue"
-data <- tag3
-
-f <- ggplot(data,aes(x=date,y=temp.m)) + facet_grid(ID ~ .) +
-  geom_line(aes(x=date,y=temp.m),color=tempcol,size=1,alpha=1)+
-  #geom_line(aes(x=date,y=temp.max),color="grey",size=1,alpha=0.6,linetype = "dotted")+
-  #geom_line(aes(x=date,y=temp.min),color="grey",size=1,alpha=0.6,linetype = "dotted")+
-  geom_ribbon(aes(x=date,ymin=temp.min,ymax=temp.max,fill=tempcol),alpha=0.5)+
-  geom_line(aes(x=date,y=pressure.m),color=presscol,size=1,alpha=1)+
-  geom_ribbon(aes(x=date,ymin=pressure.min,ymax=pressure.max,fill=presscol),alpha=0.2)+
-  theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
-  scale_fill_manual("",values=c(tempcol,presscol),labels=c("temperature","pressure"))
-
-f
-# ggsave(filename = paste(plot_dir,paste("allcombinedtag.png",sep="_"),sep="/"), 
-#        plot = f, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
-
-
-summary(tag3)
-
-#add a second axis for the pressure
-f.1 <- ggplot(data,aes(x=date,y=temp.m)) + facet_grid(ID ~ .) +
-        geom_line(aes(x=date,y=temp.m),color=tempcol,size=1,alpha=1)+
-        #geom_line(aes(x=date,y=temp.max),color="grey",size=1,alpha=0.6,linetype = "dotted")+
-        #geom_line(aes(x=date,y=temp.min),color="grey",size=1,alpha=0.6,linetype = "dotted")+
-        geom_ribbon(aes(x=date,ymin=temp.min,ymax=temp.max,fill=tempcol),alpha=0.5)+
-        geom_line(aes(x=date,y=pressure.m),color=presscol,size=1,alpha=1)+
-        geom_ribbon(aes(x=date,ymin=pressure.min,ymax=pressure.max,fill=presscol),alpha=0.2)+
-        scale_fill_manual("",values=c(tempcol,presscol),labels=c("temperature","pressure"))+
-        theme_bw()+ ylab("temperature (°C)") + xlab("time")+
-        theme(legend.position="bottom",axis.title.y = element_text(color="grey30"),axis.title.y.right = element_text(color = "grey30"))+
-        scale_x_date(name = "time") +
-        scale_y_continuous(name = "temperature (°C)",
-                           sec.axis = sec_axis(~., name = "pressure (decibars)"))
-
-f.1
-
-# ggsave(filename = paste(plot_dir,paste("allcombinedtag2.png",sep="_"),sep="/"), 
-#        plot = f.1, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+# # Commenting this out. This section is reliant on the section that has been commented out above, which didn't run because the dataframe format expected was different to the data which was loaded
 # 
-
+# #common dates
+# tag1.3 <- subset(tag1.2,!date=="2020-11-25")
+# tag2.3 <- subset(tag2.2,!date=="2021-02-04")
+# summary(tag1.3)
+# summary(tag2.3)
+# 
+# tag3 <- rbind(tag1.3,tag2.3)
+# 
+# tempcol <- "limegreen"
+# presscol <- "green4"
+# data <- tag3
+# 
+# d <- ggplot(data,aes(x=date,y=temp.m)) +
+#   geom_line(aes(x=date,y=temp.m,color=ID),size=1,alpha=1)+
+#   #geom_ribbon(aes(x=date,ymin=temp.min,ymax=temp.max,fill=ID),alpha=0.2)+
+#   theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
+#   scale_colour_manual("vessel",values=c(tempcol,presscol))+
+#   #scale_fill_manual("",values=c(tempcol,presscol))+
+#   ggtitle("temperature")
+# 
+# d
+# # ggsave(filename = paste(plot_dir,paste("Ttag.png",sep="_"),sep="/"), 
+# #        plot = d, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+# 
+# 
+# tempcol <- "cyan2"
+# presscol <- "slateblue"
+# 
+# e <- ggplot(data,aes(x=date,y=temp.m,group=ID)) +
+#   geom_line(aes(x=date,y=pressure.m,color=ID),size=1,alpha=1)+
+#   geom_ribbon(aes(x=date,ymin=pressure.min,ymax=pressure.max,fill=ID),fill=presscol,alpha=0.1)+
+#   theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
+#   scale_colour_manual("vessel",values=c(tempcol,presscol))+
+#   scale_fill_manual("",values=c(tempcol,presscol))+
+#   ggtitle("hauls")
+# 
+# e
+# # ggsave(filename = paste(plot_dir,paste("Ptag.png",sep="_"),sep="/"), 
+# #        plot = e, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+# 
+# 
+# 
+# #more complicated graph
+# tempcol <- "#69b3a2"
+# presscol <- "blue"
+# data <- tag3
+# 
+# f <- ggplot(data,aes(x=date,y=temp.m)) + facet_grid(ID ~ .) +
+#   geom_line(aes(x=date,y=temp.m),color=tempcol,size=1,alpha=1)+
+#   #geom_line(aes(x=date,y=temp.max),color="grey",size=1,alpha=0.6,linetype = "dotted")+
+#   #geom_line(aes(x=date,y=temp.min),color="grey",size=1,alpha=0.6,linetype = "dotted")+
+#   geom_ribbon(aes(x=date,ymin=temp.min,ymax=temp.max,fill=tempcol),alpha=0.5)+
+#   geom_line(aes(x=date,y=pressure.m),color=presscol,size=1,alpha=1)+
+#   geom_ribbon(aes(x=date,ymin=pressure.min,ymax=pressure.max,fill=presscol),alpha=0.2)+
+#   theme_bw()+ theme(legend.position="bottom") + ylab("temperature (°C)") + xlab("time")+
+#   scale_fill_manual("",values=c(tempcol,presscol),labels=c("temperature","pressure"))
+# 
+# f
+# # ggsave(filename = paste(plot_dir,paste("allcombinedtag.png",sep="_"),sep="/"), 
+# #        plot = f, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+# 
+# 
+# summary(tag3)
+# 
+# #add a second axis for the pressure
+# f.1 <- ggplot(data,aes(x=date,y=temp.m)) + facet_grid(ID ~ .) +
+#         geom_line(aes(x=date,y=temp.m),color=tempcol,size=1,alpha=1)+
+#         #geom_line(aes(x=date,y=temp.max),color="grey",size=1,alpha=0.6,linetype = "dotted")+
+#         #geom_line(aes(x=date,y=temp.min),color="grey",size=1,alpha=0.6,linetype = "dotted")+
+#         geom_ribbon(aes(x=date,ymin=temp.min,ymax=temp.max,fill=tempcol),alpha=0.5)+
+#         geom_line(aes(x=date,y=pressure.m),color=presscol,size=1,alpha=1)+
+#         geom_ribbon(aes(x=date,ymin=pressure.min,ymax=pressure.max,fill=presscol),alpha=0.2)+
+#         scale_fill_manual("",values=c(tempcol,presscol),labels=c("temperature","pressure"))+
+#         theme_bw()+ ylab("temperature (°C)") + xlab("time")+
+#         theme(legend.position="bottom",axis.title.y = element_text(color="grey30"),axis.title.y.right = element_text(color = "grey30"))+
+#         scale_x_date(name = "time") +
+#         scale_y_continuous(name = "temperature (°C)",
+#                            sec.axis = sec_axis(~., name = "pressure (decibars)"))
+# 
+# f.1
+# 
+# # ggsave(filename = paste(plot_dir,paste("allcombinedtag2.png",sep="_"),sep="/"), 
+# #        plot = f.1, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+# # 
+# 
 
 # ===================================================--
 # 3. ADD CATCHES ----
@@ -514,27 +519,27 @@ g
 
 #add catches in the legend (not working)
 
-g1 <- ggplot() + geom_line(mapping = aes(x = data$date, y = data$pil/1000),color ="red", size = 1,alpha=0.5,linetype="solid") + 
-  
-  geom_line(mapping = aes(x = data$date, y = data$temp.m,color=tempcol),size=1,alpha=1,linetype="solid") +
-  geom_ribbon(aes(x=data$date,ymin=data$temp.min,ymax=data$temp.max,fill=tempcol),alpha=0.5)+
-  
-  geom_line(aes(x=data$date,y=data$pressure.m,color=presscol),size=1,alpha=0.5,linetype="solid")+
-  geom_ribbon(aes(x=data$date,ymin=data$pressure.min,ymax=data$pressure.max,fill=presscol),alpha=0.2)+
-  
-  
-  scale_x_date(name = "time") +
-  scale_y_continuous(name = "temperature (°C)", 
-                     sec.axis = sec_axis(~., name = "sardine catches (t)")) + 
-  theme_bw()+
-  theme(axis.title.y = element_text(color = tempcol),
-        axis.title.y.right = element_text(color = "grey30"),
-        legend.position = "bottom")+ 
-  ggtitle(paste(unique(data$ID),sep="_"))+
-  #scale_colour_manual("",values = c(tempcol,presscol,"black"),labels=c("mean temperature","mean pressure","catches"))+
-  #scale_fill_manual("",values=c("red"),labels=c("catches"))
-  
-  g1
+# g1 <- ggplot() + geom_line(mapping = aes(x = data$date, y = data$pil/1000),color ="red", size = 1,alpha=0.5,linetype="solid") + 
+#   
+#   geom_line(mapping = aes(x = data$date, y = data$temp.m,color=tempcol),size=1,alpha=1,linetype="solid") +
+#   geom_ribbon(aes(x=data$date,ymin=data$temp.min,ymax=data$temp.max,fill=tempcol),alpha=0.5)+
+#   
+#   geom_line(aes(x=data$date,y=data$pressure.m,color=presscol),size=1,alpha=0.5,linetype="solid")+
+#   geom_ribbon(aes(x=data$date,ymin=data$pressure.min,ymax=data$pressure.max,fill=presscol),alpha=0.2)+
+#   
+#   
+#   scale_x_date(name = "time") +
+#   scale_y_continuous(name = "temperature (°C)", 
+#                      sec.axis = sec_axis(~., name = "sardine catches (t)")) + 
+#   theme_bw()+
+#   theme(axis.title.y = element_text(color = tempcol),
+#         axis.title.y.right = element_text(color = "grey30"),
+#         legend.position = "bottom")+ 
+#   ggtitle(paste(unique(data$ID),sep="_"))+
+#   #scale_colour_manual("",values = c(tempcol,presscol,"black"),labels=c("mean temperature","mean pressure","catches"))+
+#   #scale_fill_manual("",values=c("red"),labels=c("catches"))
+#   
+#   g1
 
 
 # 4. FINDING RELATIONSHIPS----
