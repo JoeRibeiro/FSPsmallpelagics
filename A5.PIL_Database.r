@@ -3,7 +3,7 @@
 # 12-03-2021; last updated 09/09/2022
 #---------------------------------------------------------------------## 
 
-setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
 plot_dir <- file.path(getwd(), "Data/plots/PIL/")

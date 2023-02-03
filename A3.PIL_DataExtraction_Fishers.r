@@ -3,7 +3,7 @@
 # 09-11-2020; last modified 09/09/2022
 #---------------------------------------------------------------------##
 
-setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 rm(list=ls())
 
 #.rs.restartR();#xlcFreeMemory();#gc() #see memmory used

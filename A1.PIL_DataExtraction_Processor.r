@@ -6,10 +6,10 @@
 # ===================================================--
 # 0. Set directories----
 # ===================================================--
-# Note - input file has changed here C:\Users\JR13\Documents\LOCAL_NOT_ONEDRIVE\FSPsmallpelagics2021\Data\Fishers\FSP_Database_Fishers2122_old_before_spike_updated.xlsx
+# Note - input file has changed here C:\Users\JR13\Documents\LOCAL_NOT_ONEDRIVE\FSPsmallpelagics2022\Data\Fishers\FSP_Database_Fishers2122_old_before_spike_updated.xlsx
 
 
-setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
+setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 rm(list=ls())
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Processors/PIL/")

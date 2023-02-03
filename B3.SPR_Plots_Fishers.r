@@ -5,7 +5,7 @@
 if (FALSE) { # Don't try running this one. This script doesn't do what it says, it seems to be mostly coded for a different species (PIL) but I think has been abandoned near the start as I assume the data didn't exist?
       
     rm(list=ls())
-    setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/")
+    setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
     
     # set input, output directories
     inp_dir <- file.path(getwd(), "Data/Fishers/SPR/")

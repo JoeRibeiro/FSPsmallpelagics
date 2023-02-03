@@ -10,7 +10,7 @@
 # ===================================================--
 
 #go to the file where I comply all the info for the programme
-db_inp <- "C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2021/Data/Output/"
+db_inp <- "C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/Data/Output/"
 list.files(db_inp)
 
 # This section brings in PIL_agg2122.csv which is created at the end of script A5, So this section was out of sequence
