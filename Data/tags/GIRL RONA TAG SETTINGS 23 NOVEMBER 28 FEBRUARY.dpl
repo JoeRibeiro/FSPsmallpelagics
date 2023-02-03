@@ -1,0 +1,43 @@
+DPL Version:8
+Comment:tag FOR gIRL RONA 23-NOV-21 28-FEB-22
+Tag Signature:0,1,1,0,0,0,0,0,3.8,32767,1,32768,256,49664,10,2
+Number of Sensors Available:2
+Calibration Mode:0
+Dive Termination Percentage (%FS) : 3
+G Range: 2g
+Gyro Range: 250°/s
+Wet Dry Logging: Disabled
+Dive data logging: Disabled
+PDST Release time: 23/11/2021 06_55_55
+Version: False
+Start Date: 7997.0899
+Stop Date: 8094.078
+Block Period: 139561
+Line Start: 0
+Line Step:0
+Start Day of Century: 7997
+Stop Day of Century: 8094
+Start Time: 899
+Stop Time: 780
+Rate: 10
+Fast Rate :0
+Pointer: 0
+Colour: 0
+Samples: 837366
+Packets: 209341
+Size: 2512092
+Fast Size: 0
+Sensors: 6
+Pa inc: 0
+Resolution: 0
+Resolution: 12
+Resolution: 12
+Resolution: 0
+Resolution: 0
+Resolution: 0
+Resolution: 0
+Resolution: 0
+Flags: 0
+Repeat Rate: 0
+Repeat Count: 0
+G Corrected: False

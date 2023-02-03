@@ -1,0 +1,43 @@
+DPL Version:8
+Comment:
+Tag Signature:0,1,1,0,0,0,0,0,3.8,32767,1,32768,256,49664,10,2
+Number of Sensors Available:2
+Calibration Mode:0
+Dive Termination Percentage (%FS) : 3
+G Range: 2g
+Gyro Range: 250°/s
+Wet Dry Logging: Disabled
+Dive data logging: Disabled
+PDST Release time: 23/07/2021 12_51_43
+Version: False
+Start Date: 7874.0899
+Stop Date: 8065.078
+Block Period: 274921
+Line Start: 0
+Line Step:0
+Start Day of Century: 7874
+Stop Day of Century: 8065
+Start Time: 899
+Stop Time: 780
+Rate: 10
+Fast Rate :0
+Pointer: 0
+Colour: 0
+Samples: 1649526
+Packets: 412381
+Size: 4948572
+Fast Size: 0
+Sensors: 6
+Pa inc: 0
+Resolution: 0
+Resolution: 12
+Resolution: 12
+Resolution: 0
+Resolution: 0
+Resolution: 0
+Resolution: 0
+Resolution: 0
+Flags: 0
+Repeat Rate: 0
+Repeat Count: 0
+G Corrected: False
