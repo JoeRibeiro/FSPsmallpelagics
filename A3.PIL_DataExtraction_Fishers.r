@@ -61,14 +61,14 @@ species <- "PIL"
 list.files(inp_dir)
 #temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2021_vs5.xlsx", sep="/"))) #does not work
 #getSheetNames("C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2021/Data/Fishers/FSP_Database_Fishers2021_vs5.xlsx")
-temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2122.xlsx", sep=""))) 
+temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2223.xlsx", sep=""))) 
 # This excel spreadsheet was broken as two column names were unseparated, causing an NA column, and longitude was misspelt as longitue. I corrected this in the excel file as well as in the script (which expected longitue)
 
 sheetLOG <- temp[grepl("^LB", temp)]
 # Before reading them in, make sure shooting and hauling time are in time format in excel and that there are no comments in those columns.
 # create list with all my Logbooks
 LOG <- list()
-for(i in sheetLOG) LOG[[i]] <- data.table(xlsx::read.xlsx(paste(inp_dir, "FSP_Database_Fishers2122.xlsx", sep="/"), header=TRUE, sheetName = i))
+for(i in sheetLOG) LOG[[i]] <- data.table(xlsx::read.xlsx(paste(inp_dir, "FSP_Database_Fishers2223.xlsx", sep="/"), header=TRUE, sheetName = i))
 LOG <- LOG[sapply(LOG, function(x) dim(x)[1]) > 0]
 
 # add column with ID
@@ -90,16 +90,16 @@ LOGc[,Date:=as.Date(Date, format="%Y-%m-%d")]
 LOGc[,month:=month(Date)]
 LOGc[,year:=year(Date)]
 
-
-#add fishing season
-for (i in 1:nrow(LOGc)){
-  {if (LOGc$month[i]%in%c("1","2","3")&LOGc$year[i]=="2021")
-    LOGc$fishingseason[i] <-"2020-2021"}
-  {if (LOGc$month[i]%in%c("7","8","9","10","11","12")&LOGc$year[i]=="2021")
-    LOGc$fishingseason[i] <-"2021-2022"}
-  {if (LOGc$month[i]%in%c("1","2")&LOGc$year[i]=="2022")
-    LOGc$fishingseason[i] <-"2021-2022"}
-}
+LOGc$fishingseason = "2022-2023"
+# #add fishing season
+# for (i in 1:nrow(LOGc)){
+#   {if (LOGc$month[i]%in%c("1","2","3")&LOGc$year[i]=="2021")
+#     LOGc$fishingseason[i] <-"2020-2021"}
+#   {if (LOGc$month[i]%in%c("7","8","9","10","11","12")&LOGc$year[i]=="2021")
+#     LOGc$fishingseason[i] <-"2021-2022"}
+#   {if (LOGc$month[i]%in%c("1","2")&LOGc$year[i]=="2022")
+#     LOGc$fishingseason[i] <-"2021-2022"}
+# }
 
 table(LOGc$month,LOGc$year,LOGc$fishingseason)
 
@@ -391,12 +391,12 @@ df4[is.na(df4)] <- 0
 #######################################################--
 
 list.files(inp_dir)
-temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2122.xlsx", sep="/"))) #trying with .xls version (less memory used), getSheetNames does not work with .xls
+temp <- unlist(getSheetNames(paste(inp_dir, "FSP_Database_Fishers2223.xlsx", sep="/"))) #trying with .xls version (less memory used), getSheetNames does not work with .xls
 
 sheetTL <- temp[grepl("^TL", temp)]
 
 TL <- list()
-for(i in sheetTL) TL[[i]] <- data.table(xlsx::read.xlsx(paste(inp_dir,"FSP_Database_Fishers2122.xlsx", sep="/"),header=TRUE,sheetName = i,stringsAsFactors=F))
+for(i in sheetTL) TL[[i]] <- data.table(xlsx::read.xlsx(paste(inp_dir,"FSP_Database_Fishers2223.xlsx", sep="/"),header=TRUE,sheetName = i,stringsAsFactors=F))
 
 # add column with ID
 TLb <- mapply(cbind,TL, "SampleID"=names(TL), SIMPLIFY=F)
@@ -439,7 +439,7 @@ table(TLc$month,TLc$year)
 
 TotL <- TLc
 summary(TotL)
-TotL[is.na(TotL)] <- 0
+TotL[is.na(TotL$TL)] <- 0
 
 # sum up lengths
 TLc1 <- TotL[!is.na(N),sum(N), by=.(TL)]
