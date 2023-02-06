@@ -117,8 +117,10 @@ boxplot$month2[boxplot$month2=="12"] <- "Dec"
 boxplot$month2[boxplot$month2=="1"] <- "Jan"
 boxplot$month2[boxplot$month2=="2"] <- "Feb"
 boxplot$month2[boxplot$month2=="3"] <- "Mar"
+boxplot$month2[boxplot$month2=="3"] <- "Apr"
+boxplot$month2[boxplot$month2=="3"] <- "May"
 
-boxplot$month2 <- factor(boxplot$month2,levels = c("Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar"),ordered=TRUE)  
+boxplot$month2 <- factor(boxplot$month2,levels = c("Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May"),ordered=TRUE)  
 
 T_CatchMonth <- ggplot(boxplot, aes(month2, pil/1000, fill=vessel)) + geom_boxplot() +
   theme_bw(25) + ylab("tonnes") + xlab("month") +
