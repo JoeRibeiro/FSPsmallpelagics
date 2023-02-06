@@ -58,16 +58,16 @@ l <- subset(db,vessel=="LYONESSE"&month%in%c(9,11,12))
 #mf <- subset(db,vessel=="MAYFLOWER"&month%in%c(7,8,9,10,11,12))
 #pm <- subset(db,vessel=="PELAGIC MARKSMAN"&month%in%c(7,8,9,10,11,12))
 #r <- subset(db,vessel=="RESOLUTE"&month%in%c(7,8,9))
-#sd <- subset(db,vessel=="SERENE DAWN"&month%in%c(7,8,9,10,11,12))
+sd <- subset(db,vessel=="SERENE DAWN"&month%in%c(7,8,9,10,11,12))
 #v <- subset(db,vessel=="VESTA"&month%in%c(8))
-cc <- subset(db,vessel=="CHARLOTTE CLARE"&month%in%c(11))
+#cc <- subset(db,vessel=="CHARLOTTE CLARE"&month%in%c(11))
 
 #p <- subset(db,vessel%in%c("ASTHORE","CHARLOTTE CLARE","GOLDEN HARVEST","PRIDE OF CORNWALL","RACHEL ANNE","CONSTANT FRIEND","MARY ANNE"))
-p <- subset(db,vessel%in%c("CHARLOTTE CLARE","LYONESSE"))
+p <- subset(db,vessel%in%c("SERENE DAWN","LYONESSE"))
 
 
 #db2 <- rbind(gm,l,mf,pm,r,sd,v,p)
-db2 <- rbind(l,cc)
+db2 <- rbind(l,sd)
 table(db2$month,db2$vessel,db2$source)
 
 #comparisions with common months

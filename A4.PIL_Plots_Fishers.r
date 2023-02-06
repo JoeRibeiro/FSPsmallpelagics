@@ -397,15 +397,15 @@ LOG$hom <- as.numeric(as.factor(LOG$hom))
 
 LOG1 <- LOG[!(LOG$lat==0|LOG$lon==0),]
 
-P_All_MapHaul <-ggplot() + 
-  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
-  geom_polypath(col="black")+ylab("Lat") + xlab("Lon") + theme_bw(20)+
-  geom_scatterpie(data=LOG1, aes(x=lon, y=lat, group=as.factor(vessel)), 
-                  cols=c("spr", "pil", "ane", "her", "mac", "hom"), 
-                  alpha=0.5,legend_name = "species",pie_scale = 1.5) +
-  facet_wrap(.~month,nrow=3) 
-
-P_All_MapHaul
+# P_All_MapHaul <-ggplot() + 
+#   geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
+#   geom_polypath(col="black")+ylab("Lat") + xlab("Lon") + theme_bw(20)+
+#   geom_scatterpie(data=LOG1, aes(x=lon, y=lat, group=as.factor(vessel)), 
+#                   cols=c("spr", "pil", "ane", "her", "mac", "hom"), 
+#                   alpha=0.5,legend_name = "species",pie_scale = 1.5) +
+#   facet_wrap(.~month,nrow=3) 
+# 
+# P_All_MapHaul
 
 # Save map w piechart
 ggsave(filename=paste(plot_dir,paste(species,"MapHauls_Othersp.png",sep="_"),sep="/"),plot=P_All_MapHaul,width=50,height=20,units="cm",dpi=200,type="cairo-png")
