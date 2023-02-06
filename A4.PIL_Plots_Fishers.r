@@ -15,9 +15,11 @@ lib <- function(packages){
   
 }
 
+species <- "PIL"
+
 # set input, output directories
-inp_dir <- file.path(getwd(), "Data/Fishers/PIL/")
-plot_dir <- file.path(getwd(), "Data/plots/PIL")
+inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))
+plot_dir <- file.path(getwd(), paste0("Data/plots/",species,"/"))
 out_dir <- file.path(getwd(), "Data/Output/")
 
 # load libraries
@@ -29,10 +31,9 @@ lib(packages) #install packages through own function
 
 
 #get all the final plots from all the processors
-list.files(out_dir, recursive=FALSE,pattern="PIL*")
+list.files(out_dir, recursive=FALSE,pattern=paste0(species,"*"))
 
 #enter species------
-species <- "PIL"
 
 # ===================================================--
 # 0. Load files----
@@ -40,10 +41,10 @@ species <- "PIL"
 
 # File produced in script: A3. PIL_DataExtraction_Fishers #
 
-pilfish <- read.table(paste(out_dir,"/PIL_LBfishers_2223.csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
+pilfish <- read.table(paste(out_dir,paste0("/",species,"_LBfishers_2223.csv"),sep=''),sep=",",header=TRUE,stringsAsFactors = F)
 head(pilfish);dim(pilfish) # 472 25
 
-piltl <- read.table(paste(out_dir,"/PIL_TLfishers_2223.csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
+piltl <- read.table(paste(out_dir,paste0("/",species,"_TLfishers_2223.csv"),sep=''),sep=",",header=TRUE,stringsAsFactors = F)
 head(piltl);dim(piltl) # 312 13
 
 

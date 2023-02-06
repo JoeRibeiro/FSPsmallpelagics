@@ -8,12 +8,13 @@
 # ===================================================--
 # Note - input file has changed here C:\Users\JR13\Documents\LOCAL_NOT_ONEDRIVE\FSPsmallpelagics2022\Data\Fishers\FSP_Database_Fishers2122_old_before_spike_updated.xlsx
 
+species = 'PIL'
 
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 rm(list=ls())
 # set input, output directories
-inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
-plot_dir <- file.path(getwd(), "Data/plots/PIL/")
+inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))
+plot_dir <- file.path(getwd(), paste0("Data/plots/",species,"/"))
 out_dir <- file.path(getwd(), "Data/Output/")
 list.files(inp_dir,recursive=TRUE) # recursive TRUE to see inside the different folders
 
@@ -40,7 +41,7 @@ lib(packages) #install libraries through own function
 
 #this year interfish is giving us the data in electronic format, so need to change the script here
 
-inp_dir_inter <- file.path(getwd(),"Data/Processors/PIL/Interfish/")
+inp_dir_inter <- file.path(getwd(),paste0("Data/Processors/",species,"/Interfish/"))
 list.files(inp_dir_inter)
 
 #data from interfish is different as each excel tab is one date, need to extract and aggregate all together
@@ -152,7 +153,7 @@ pil$fat <- round(as.numeric(pil$fat),2)
 
 head(pil)
 pil <- pil[,c("date","intake","logbook","division","length.cm","weight.g","fat","vessel","bins","landed","catchlanded.kg")]
-pil$species <- "PIL"
+pil$species <- species
 
 plot(weight.g~length.cm,data=pil)
 hist(as.numeric(pil$length.cm))
@@ -227,13 +228,13 @@ pil <- pil[,c("date","vessel","bins","catchlanded.kg","intake","TLcm","weight.g"
 
 
 #save the aggregated data and ready to start the analysis
-write.csv(pil, file=paste(out_dir,"PIL_Interfish_untilnov.csv",sep="/"),quote=F,row.names = F)
-write.csv(pilfat,file=paste(out_dir,"PIL_Interfish_fat.csv",sep="/"),quote=F,row.names=F)
+write.csv(pil, file=paste(out_dir,paste0(species,"_Interfish_untilnov.csv"),sep="/"),quote=F,row.names = F)
+write.csv(pilfat,file=paste(out_dir,paste0(species,"_Interfish_fat.csv"),sep="/"),quote=F,row.names=F)
 
 # ===================================================--
 # 2. PIL FALFISH----
 # ===================================================--
-inp_dir_Falfish <- file.path(getwd(),"Data/Processors/PIL/Falfish/")
+inp_dir_Falfish <- file.path(getwd(),paste0("Data/Processors/",species,"/Falfish/"))
 list.files(inp_dir_Falfish)
 
 # read excel files (make sure all are in .xlsx format, sometimes Billy sends it in a different format)
@@ -363,7 +364,7 @@ FALFISH$ID <- paste("FALFISH",FALFISH$ID2,sep="_")
 FALFISH <- FALFISH[,c("Date","Vessel","SampleWt", "month", "year", "TLcm", "weight","ID")]
 
 #save the file
-write.csv(FALFISH, file=paste(out_dir,"/PIL_FALFISH_2022.csv",sep="/"),quote=F,row.names = F)
+write.csv(FALFISH, file=paste(out_dir,paste0("/",species,"_FALFISH_2022.csv"),sep="/"),quote=F,row.names = F)
 
 
 # # ===================================================--
@@ -798,17 +799,17 @@ write.csv(FALFISH, file=paste(out_dir,"/PIL_FALFISH_2022.csv",sep="/"),quote=F,r
 out_dir <- file.path(getwd(), "Data/Output/")
 list.files(out_dir)
 #get all the final plots from all the processors
-list.files(out_dir, pattern="PIL*")
+list.files(out_dir, pattern=paste0(species,"*"))
 
 #READ final files
-fal <- read.csv(paste(out_dir,"/PIL_FALFISH_2022.csv",sep=""),sep=",",header=TRUE,stringsAsFactors = F)
+fal <- read.csv(paste(out_dir,paste0("/",species,"_FALFISH_2022.csv"),sep=""),sep=",",header=TRUE,stringsAsFactors = F)
 head(fal)
 #fal$month <- month(fal$Date)
 #fal$year <- year(fal$Date)
 fal$Date <- as.Date(fal$Date)
 fal$landings_kg <- ""
 fal$processor <- "Falfish"
-fal$species <- "PIL"
+fal$species <- species
 fal <- fal[,c("Date","Vessel","TLcm","weight","SampleWt","landings_kg","species","month","year","processor","ID")]
 names(fal) <- c("date","vessel","TL_cm","weight_g","SampleWt","landings_kg","species","month","year","processor","id")  
 plot(weight_g~TL_cm,fal)
@@ -816,7 +817,7 @@ summary(fal)
 (fal[!complete.cases(fal),]) #1
 fal$TL_cm[is.na(fal$TL_cm)] <- 0
 
-inter <- read.table(paste(out_dir,"/PIL_Interfish_untilnov.csv",sep=""),sep=",",header=TRUE,stringsAsFactors = F)
+inter <- read.table(paste(out_dir,paste0("/",species,"_Interfish_untilnov.csv"),sep=""),sep=",",header=TRUE,stringsAsFactors = F)
 head(inter);str(inter)
 inter$date <- as.Date(inter$date)
 inter$month <- month(inter$date)
@@ -894,7 +895,7 @@ all <- all[,c("date","vessel","totalcatch_kg","length_cm","weight_g","samplewt_g
 #all3 <- all3[,c("date","vessel","totalcatch_kg","length_cm","weight_g","samplewt_g","sampleID","month","year","source","processor","species")]
 
 #save it
-write.csv(all,file=paste(out_dir,"/PIL_processors_2022.csv",sep=""),row.names=F)
+write.csv(all,file=paste(out_dir,"/",species,"_processors_2022.csv",sep=""),row.names=F)
 #write.csv(all3,file=paste(out_dir,"/PIL_processorsLW_2021.csv",sep=""),row.names=F)
 
 ###########################################################################################################################--

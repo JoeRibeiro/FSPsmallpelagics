@@ -6,10 +6,13 @@
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 rm(list=ls())
 
+species = 'PIL'
+
 # set input, output directories
-inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
-plot_dir <- file.path(getwd(), "Data/plots/PIL")
+inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))
+plot_dir <- file.path(getwd(), paste0("Data/plots/",species,"/"))
 out_dir <- file.path(getwd(), "Data/Output/")
+
 list.files(out_dir,recursive=TRUE) # recursive TRUE to see inside the different folders
 
 # load libraries----
@@ -31,7 +34,7 @@ lib(packages) #install packages through own function
 
 
 #get all the final plots from all the processors
-list.files(out_dir, pattern="PIL*")
+list.files(out_dir, pattern=paste0(species,"*"))
 
 # ===================================================--
 # 0. Latest unify file all processors PIL ----
@@ -45,7 +48,7 @@ list.files(out_dir, pattern="PIL*")
 #pilproc <- read.table(paste(out_dir,"/PIL_processorsLW_2021.csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
 #head(pilproc);dim(pilproc) # 21255 12
 
-pilproc <- read.table(paste(out_dir,"/PIL_processors_2022.csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
+pilproc <- read.table(paste(out_dir,paste0("/",species,"_processors_2022.csv"),sep=''),sep=",",header=TRUE,stringsAsFactors = F)
 head(pilproc);dim(pilproc) # 7551  12 data until february, only Falfish and Interfish
 summary(pilproc)
 
@@ -494,8 +497,8 @@ TukeyHSD(res.aov)
 capture_t <- TukeyHSD(res.aov)
 
 #save it
-capture.output(capture_a, file = "pil_anovaresults_processors.txt")#save the file, goes to workspace
-capture.output(capture_t, file = "pil_tuckeyresults_processors.txt")#save the file, goes to workspace
+capture.output(capture_a, file = paste0(species,"_anovaresults_processors.txt"))#save the file, goes to workspace
+capture.output(capture_t, file = paste0(species,"_tuckeyresults_processors.txt"))#save the file, goes to workspace
 
 
 
@@ -533,8 +536,8 @@ TukeyHSD(res.aov)
 capture_t <- TukeyHSD(res.aov)
 
 #save it
-capture.output(capture_a, file = "pil_anovaresults_processorsW.txt")#save the file
-capture.output(capture_t, file = "pil_tuckeyresults_processorsW.txt")#save the file
+capture.output(capture_a, file = paste0(species,"_anovaresults_processorsW.txt"))#save the file
+capture.output(capture_t, file = paste0(species,"_tuckeyresults_processorsW.txt"))#save the file
 
 ######----######--
 
@@ -723,7 +726,7 @@ db %>%
 
 #8.Evolution of fat content (Interfish only)----
 
-interfat <- read.csv(paste(out_dir,"PIL_Interfish_fat.csv",sep="/"))
+interfat <- read.csv(paste(out_dir,paste0(species,"_Interfish_fat.csv"),sep="/"))
 head(interfat)
 interfat$date <- as.Date(interfat$date)
 
