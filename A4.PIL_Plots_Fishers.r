@@ -456,7 +456,7 @@ dim(PIL_hauls_pos)
 
 #select vessel
 vess1 <- subset(PIL_hauls_pos,vessCode=="vess1") 
-#a) one vessel----
+#a) one vessel---- Only one vessel provided logbook data by Feb 2023, lyonesse
 MapHaulv1 <- ggplot() +
   geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_polypath(col="black") +
