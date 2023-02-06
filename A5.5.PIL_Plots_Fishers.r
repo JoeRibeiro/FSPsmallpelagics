@@ -13,8 +13,8 @@
 db_inp <- "C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/Data/Output/"
 list.files(db_inp)
 
-# This section brings in PIL_agg2122.csv which is created at the end of script A5, So this section was out of sequence
-db <- read.table(paste(db_inp,"PIL_agg2122.csv",sep=""),sep=",",header=T, stringsAsFactors = F)
+# This section brings in PIL_agg2223.csv which is created at the end of script A5, So this section was out of sequence
+db <- read.table(paste(db_inp,"PIL_agg2223.csv",sep=""),sep=",",header=T, stringsAsFactors = F)
 head(db);dim(db) #1293 13
 summary(db)
 db[is.na(db)] <- 0 
@@ -37,7 +37,7 @@ comp2<- ggplot(db, aes(length_cm,fill=factor(source))) + geom_density(alpha=0.25
 comp3 <- comp2+theme(legend.position="bottom")
 
 #save plot
-ggsave(file=paste0(plot_dir, "/PIL_LProcFish_2122.png"), comp3, width=24, height=16, units="cm", dpi=200)
+ggsave(file=paste0(plot_dir, "/PIL_LProcFish_2223.png"), comp3, width=24, height=16, units="cm", dpi=200)
 
 
 tapply(db$length_cm, db$source, summary)
@@ -79,7 +79,7 @@ comp2<- ggplot(db2, aes(length_cm,fill=factor(source))) + geom_density(alpha=0.2
 comp3 <- comp2+theme(legend.position="bottom")
 
 #save plot
-ggsave(file=paste0(plot_dir,"/PIL_LProcFish_2122_samemonths.png"), comp3, width=24, height=16, units="cm", dpi=200)
+ggsave(file=paste0(plot_dir,"/PIL_LProcFish_2223_samemonths.png"), comp3, width=24, height=16, units="cm", dpi=200)
 
 
 #6.3 Improving graphs----

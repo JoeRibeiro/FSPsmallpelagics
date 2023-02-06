@@ -40,11 +40,9 @@ lib(packages)
 #######################################################--
 
 #inp_dir <- file.path(getwd(), "Data/Fishers/")
-#try with the 2021 data for the moment
 
 # set input, output directories
 inp_dir <- file.path(getwd(), "Data/Fishers//")
-#inp_dir <- "C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP2122/Data/Fishers/"
 out_dir <- file.path(getwd(), "Data/Output/")
 list.files(inp_dir)
 
@@ -76,8 +74,8 @@ LOGb <- mapply(cbind, LOG, "SampleID"=names(LOG), SIMPLIFY=F)
 summary(LOGb)
 
 str(LOGb)
-LOGb$LB_PELAGIC_MARKSMAN$Shoot.time<- as.numeric(LOGb$LB_PELAGIC_MARKSMAN$Shoot.time) #need to be able to join them
-LOGb$LB_CHARLOTTE_CLARE$Shoot.time<- as.numeric(LOGb$LB_CHARLOTTE_CLARE$Shoot.time) #need to be able to join them
+#LOGb$LB_PELAGIC_MARKSMAN$Shoot.time<- as.numeric(LOGb$LB_PELAGIC_MARKSMAN$Shoot.time) #need to be able to join them
+#LOGb$LB_CHARLOTTE_CLARE$Shoot.time<- as.numeric(LOGb$LB_CHARLOTTE_CLARE$Shoot.time) #need to be able to join them
 
 # from list to DF
 LOGc <- do.call(rbind.data.frame,LOGb)
@@ -198,17 +196,17 @@ final.filtered <- df2[!row.has.na,]
 summary(final.filtered)
 
 #save it
-write.csv(df2,file=paste(out_dir,"/",species,"_LBfishers_2021.csv",sep=""),row.names=F)
+write.csv(df2,file=paste(out_dir,"/",species,"_LBfishers_2022.csv",sep=""),row.names=F)
 
 #select your season
 #season 2021-2022--
-df3 <- subset(df2,fishingseason=="2021-2022")
+df3 <- subset(df2,fishingseason=="2022-2023")
 table(df3$month,df3$year)
 dim(df3) #328 25
 summary(df3)
-df3[is.na(df3)] <- 0
+#df3[!is.na(df3)] <- 0
 #saveit
-write.csv(df3,file=paste(out_dir,"/",species,"_LBfishers_2122.csv",sep=""),row.names = F)
+write.csv(df3,file=paste(out_dir,"/",species,"_LBfishers_2223.csv",sep=""),row.names = F)
 
 
 # #######################################################--
@@ -455,7 +453,7 @@ stat1 <- TLc2 %>%
 
 
 #saveit
-write.csv(TotL,file=paste(out_dir,"/",species,"_TLfishers_2122.csv",sep=""),row.names = F)
+write.csv(TotL,file=paste(out_dir,"/",species,"_TLfishers_2223.csv",sep=""),row.names = F)
 ###########################################################################################################################--
 
 #next script: A4.PIL_Plots_Fishers #-----

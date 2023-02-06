@@ -15,7 +15,7 @@ out_dir <- file.path(getwd(), "Data/Output/")
 library(ggplot2);library(lubridate); library(ggpubr); library(data.table); library(dplyr); library(gplots)
 
 #read files
-db<- read.csv(paste(out_dir,"PIL_agg2122.csv",sep="/"),sep=",",header=T, stringsAsFactors = F) # We don't have a file called PIL_db_agg anywhere?
+db<- read.csv(paste(out_dir,"PIL_agg2223.csv",sep="/"),sep=",",header=T, stringsAsFactors = F) # We don't have a file called PIL_db_agg anywhere?
 
 
 head(db);dim(db) #15706 13
@@ -276,7 +276,7 @@ all.TL6
 #split in two plots for better visualization
 table(data$fishingseason)
 
-data1 <- subset(data,fishingseason %in% c("2021-2022","2018-2019"))
+data1 <- subset(data,fishingseason %in% c("2021-2022","2022-2023","2018-2019"))
 all.TL7 <- ggplot(data1, aes(TL,Freq, fill=month)) +
   geom_bar(stat="identity",position=position_dodge(2),width=0.45,alpha=1) + 
   #theme_bw(25) + scale_y_continuous(limits=c(0,max(data$Freq)+10), expand=c(0,0)) + 
@@ -292,7 +292,7 @@ all.TL7 <- ggplot(data1, aes(TL,Freq, fill=month)) +
 all.TL7
 
 
-data1 <- subset(data,fishingseason%in%c("2019-2020","2020-2021","2021-2022"))
+data1 <- subset(data,fishingseason%in%c("2019-2020","2020-2021","2021-2022","2022-2023"))
 all.TL8 <- ggplot(data1, aes(TL,Freq, fill=month)) +
   geom_bar(stat="identity",position=position_dodge(2),width=0.45,alpha=1) + 
   #theme_bw(25) + scale_y_continuous(limits=c(0,max(data$Freq)+10), expand=c(0,0)) + 

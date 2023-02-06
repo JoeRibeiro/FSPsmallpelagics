@@ -40,10 +40,10 @@ species <- "PIL"
 
 # File produced in script: A3. PIL_DataExtraction_Fishers #
 
-pilfish <- read.table(paste(out_dir,"/PIL_LBfishers_2122(2).csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
+pilfish <- read.table(paste(out_dir,"/PIL_LBfishers_2223.csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
 head(pilfish);dim(pilfish) # 472 25
 
-piltl <- read.table(paste(out_dir,"/PIL_TLfishers_2122.csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
+piltl <- read.table(paste(out_dir,"/PIL_TLfishers_2223.csv",sep=''),sep=",",header=TRUE,stringsAsFactors = F)
 head(piltl);dim(piltl) # 312 13
 
 
