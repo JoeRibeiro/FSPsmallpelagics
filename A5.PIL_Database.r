@@ -53,7 +53,7 @@ names(pilproc_aggrL) <- c("species","date","division","length_cm","N","samplewt_
 list.files(out_dir)
 
 #read latest file logbook
-lbfishers <- read.csv(paste(out_dir,"/PIL_LBfishers_2122(2).csv",sep=""),sep=",",header=T,stringsAsFactors=F)# vs(3) has an error corrected
+lbfishers <- read.csv(paste(out_dir,"/PIL_LBfishers_2122.csv",sep=""),sep=",",header=T,stringsAsFactors=F)# vs(3) has an error corrected
 dim(lbfishers)
 
 #read latest file length log

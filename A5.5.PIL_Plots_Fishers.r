@@ -37,7 +37,7 @@ comp2<- ggplot(db, aes(length_cm,fill=factor(source))) + geom_density(alpha=0.25
 comp3 <- comp2+theme(legend.position="bottom")
 
 #save plot
-#ggsave(file=paste0(plot_dir, "/PIL_LProcFish_2122.png"), comp3, width=24, height=16, units="cm", dpi=200)
+ggsave(file=paste0(plot_dir, "/PIL_LProcFish_2122.png"), comp3, width=24, height=16, units="cm", dpi=200)
 
 
 tapply(db$length_cm, db$source, summary)
@@ -79,7 +79,7 @@ comp2<- ggplot(db2, aes(length_cm,fill=factor(source))) + geom_density(alpha=0.2
 comp3 <- comp2+theme(legend.position="bottom")
 
 #save plot
-#ggsave(file=paste0(plot_dir,"/PIL_LProcFish_2122_samemonths.png"), comp3, width=24, height=16, units="cm", dpi=200)
+ggsave(file=paste0(plot_dir,"/PIL_LProcFish_2122_samemonths.png"), comp3, width=24, height=16, units="cm", dpi=200)
 
 
 #6.3 Improving graphs----
@@ -98,7 +98,7 @@ hist1 <- ggplot(db2, aes(x=length_cm, fill=source)) +
   geom_vline(data=cdat, aes(xintercept=rating.mean,  colour=source),
              linetype="dashed", size=1)+theme_bw(22)
 
-#ggsave(filename=paste(plot_dir,paste(species,"Hist_fishproc(1).png",sep="_"),sep="/"),plot=hist1,width=50,height=25,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"Hist_fishproc(1).png",sep="_"),sep="/"),plot=hist1,width=50,height=25,units="cm",dpi=200,type="cairo-png")
 
 
 # Density plots with means
@@ -108,7 +108,7 @@ hist2 <- ggplot(db2, aes(x=length_cm, fill=source)) +
              linetype="dashed", size=1)+theme_bw(22)+
   theme(legend.position = "none")
 
-#ggsave(filename=paste(plot_dir,paste(species,"Hist_fishproc(2).png",sep="_"),sep="/"),plot=hist2,width=50,height=25,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"Hist_fishproc(2).png",sep="_"),sep="/"),plot=hist2,width=50,height=25,units="cm",dpi=200,type="cairo-png")
 
 tapply(db2$length_cm, db2$source, summary)
 

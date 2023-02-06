@@ -198,7 +198,7 @@ final.filtered <- df2[!row.has.na,]
 summary(final.filtered)
 
 #save it
-#write.csv(df2,file=paste(out_dir,"/",species,"_LBfishers_2021.csv",sep=""),row.names=F)
+write.csv(df2,file=paste(out_dir,"/",species,"_LBfishers_2021.csv",sep=""),row.names=F)
 
 #select your season
 #season 2021-2022--
@@ -208,7 +208,7 @@ dim(df3) #328 25
 summary(df3)
 df3[is.na(df3)] <- 0
 #saveit
-#write.csv(df3,file=paste(out_dir,"/",species,"_LBfishers_2122.csv",sep=""),row.names = F)
+write.csv(df3,file=paste(out_dir,"/",species,"_LBfishers_2122.csv",sep=""),row.names = F)
 
 
 #######################################################--
@@ -307,7 +307,7 @@ apppil <- subset(app,species=="Sardine")
 head(apppil);dim(apppil) #144 14
 apppil <- apppil[,-which(names(apppil)%in%c("alive_count","dead_count","species"))]
 colnames(apppil)[9] <- "pil"
-#write.csv(apppil,paste(out_dir,"PIL_LBelectronic(2).csv",sep="/"),row.names=F)
+write.csv(apppil,paste(out_dir,"PIL_LBelectronic(2).csv",sep="/"),row.names=F)
 
 
 #not working, leave it for now-----
@@ -381,7 +381,7 @@ dim(df4)
 df4[is.na(df4)] <- 0
 
 #saveit
-#write.csv(df4,file=paste(out_dir,"/",species,"_LBfishers_2122(3).csv",sep=""),row.names = F)
+write.csv(df4,file=paste(out_dir,"/",species,"_LBfishers_2122.csv",sep=""),row.names = F)
 
 
 #######################################################--
@@ -455,7 +455,7 @@ stat1 <- TLc2 %>%
 
 
 #saveit
-#write.csv(TotL,file=paste(out_dir,"/",species,"_TLfishers_2122.csv",sep=""),row.names = F)
+write.csv(TotL,file=paste(out_dir,"/",species,"_TLfishers_2122.csv",sep=""),row.names = F)
 ###########################################################################################################################--
 
 #next script: A4.PIL_Plots_Fishers #-----

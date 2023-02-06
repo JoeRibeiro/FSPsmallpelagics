@@ -94,7 +94,7 @@ T_Catch<- ggplot(Catch, aes(month2, V1/1000, group=vessel, col=vessel)) + geom_l
 T_Catch
 
 #save Plots
-#ggsave(file=paste(plot_dir,paste("/",species,"_fishers_Catch.png",sep=""),sep=""),T_Catch, width=24, height=16, units="cm", dpi=200)
+ggsave(file=paste(plot_dir,paste("/",species,"_fishers_Catch.png",sep=""),sep=""),T_Catch, width=24, height=16, units="cm", dpi=200)
 
 
 # ===================================================--
@@ -130,7 +130,7 @@ T_CatchMonth <- ggplot(boxplot, aes(month2, pil/1000, fill=vessel)) + geom_boxpl
 T_CatchMonth
 
 # Save plots
-#ggsave(file=paste(plot_dir,paste("/",species,"_fishers_CatchMonth.png",sep=""),sep=""),T_CatchMonth, width=24, height=16, units="cm", dpi=200)
+ggsave(file=paste(plot_dir,paste("/",species,"_fishers_CatchMonth.png",sep=""),sep=""),T_CatchMonth, width=24, height=16, units="cm", dpi=200)
 
 
 # ===================================================--
@@ -167,7 +167,7 @@ all.TL1 <- ggplot(TLc1, aes(TL, V1)) + geom_bar(stat="identity", position="dodge
   theme(legend.position = "none")+ggtitle(paste(species,"all fishers",sep="-"))+
   geom_vline(aes(xintercept=stat2$`weighted.mean(TL, V1)`), col="red", size=1.2)
 
-#ggsave(filename=paste(plot_dir,paste(species,"allfishers_TL.png",sep="_"),sep="/"),plot=all.TL1,width=25,height=20,units="cm",dpi=300,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"allfishers_TL.png",sep="_"),sep="/"),plot=all.TL1,width=25,height=20,units="cm",dpi=300,type="cairo-png")
 
 
 ## 3.1b LFD by month and vessel----
@@ -200,7 +200,7 @@ all.TL2 <- ggplot(TLc3, aes(TL,V1, group=factor(month), fill=factor(month))) +
         axis.title.y = element_text(color = "black", size = 15),axis.title.x = element_text(color = "black", size = 15))
 # + ggtitle(paste(species,"All processors"))
 
-#ggsave(filename=paste(plot_dir,paste(species,"allfishers_TLMonths(2).png",sep="_"),sep="/"),plot=all.TL2,width=25,height=20,units="cm",dpi=300,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"allfishers_TLMonths(2).png",sep="_"),sep="/"),plot=all.TL2,width=25,height=20,units="cm",dpi=300,type="cairo-png")
 
 
 #Pelagic Marskman is pushing the others, so maybe you have to just plot him alone, or set the N free
@@ -217,7 +217,7 @@ all.TL2 <- ggplot(TLc3, aes(TL,V1, group=factor(month), fill=factor(month))) +
 # + ggtitle(paste(species,"All processors"))
 all.TL2
 
-#ggsave(filename=paste(plot_dir,paste(species,"allfishers_TLMonths.png",sep="_"),sep="/"),plot=all.TL2,width=25,height=20,units="cm",dpi=300,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"allfishers_TLMonths.png",sep="_"),sep="/"),plot=all.TL2,width=25,height=20,units="cm",dpi=300,type="cairo-png")
 
 
 #scales free
@@ -233,7 +233,7 @@ all.TL3 <- ggplot(TLc3, aes(TL,V1, group=factor(month), fill=factor(month))) +
 # + ggtitle(paste(species,"All processors")) 
 all.TL3
 
-#ggsave(filename=paste(plot_dir,paste(species,"allfishers_TLMonthsfreescal.png",sep="_"),sep="/"),plot=all.TL3,width=25,height=20,units="cm",dpi=300,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"allfishers_TLMonthsfreescal.png",sep="_"),sep="/"),plot=all.TL3,width=25,height=20,units="cm",dpi=300,type="cairo-png")
 
 
 # ===================================================--
@@ -278,7 +278,7 @@ slip3 <- slip2+theme_bw(25)+ylab("Slipping (Kg)")+xlab("Month")+
   scale_y_continuous(limits=c(0,max(slipdf$V1)+500),expand=c(0,0))+
   theme(legend.position = "bottom",legend.text=element_text(size=10))
 
-#ggsave(filename=paste(plot_dir,paste(species,"slipped.png",sep="_"),sep="/"),plot=slip3,width=25,height=20,units="cm",dpi=300,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"slipped.png",sep="_"),sep="/"),plot=slip3,width=25,height=20,units="cm",dpi=300,type="cairo-png")
 
 
 #4.2 Bycatch----
@@ -338,7 +338,7 @@ bycacth2 <-bycatch+ylab("Bycatch (N)")+xlab("Month")+scale_y_continuous(expand=c
 bycacth3<- bycacth2+scale_y_continuous(expand=c(0,0),breaks=c(0,2,4,6,8,10,12))
 bycacth3
 
-#ggsave(filename=paste(plot_dir,paste(species,"bycatch.png",sep="_"),sep="/"),plot=bycacth3,width=25,height=20,units="cm",dpi=300,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"bycatch.png",sep="_"),sep="/"),plot=bycacth3,width=25,height=20,units="cm",dpi=300,type="cairo-png")
 
 
 #######################################################--
@@ -406,7 +406,7 @@ P_All_MapHaul <-ggplot() +
 P_All_MapHaul
 
 # Save map w piechart
-#ggsave(filename=paste(plot_dir,paste(species,"MapHauls_Othersp.png",sep="_"),sep="/"),plot=P_All_MapHaul,width=50,height=20,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"MapHauls_Othersp.png",sep="_"),sep="/"),plot=P_All_MapHaul,width=50,height=20,units="cm",dpi=200,type="cairo-png")
 
 
 # ===================================================--
@@ -499,8 +499,8 @@ MapHaul <- ggplot() +
 MapHaul2 <- MapHaul+scale_size(range=c(0,30))+ scale_size_continuous(name = "Catch (t)")+guides(alpha=FALSE)
 
 # Save map w piechart
-#ggsave(filename=paste(plot_dir,paste(species,"MapHauls(1).png",sep="_"),sep="/"),plot=MapHaul,width=50,height=20,units="cm",dpi=200,type="cairo-png")
-#ggsave(filename=paste(plot_dir,paste(species,"MapHauls(2).png",sep="_"),sep="/"),plot=MapHaul2,width=50,height=20,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"MapHauls(1).png",sep="_"),sep="/"),plot=MapHaul,width=50,height=20,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"MapHauls(2).png",sep="_"),sep="/"),plot=MapHaul2,width=50,height=20,units="cm",dpi=200,type="cairo-png")
 
 
 #d) by month/vessel----
@@ -516,7 +516,7 @@ MapHaul3 <- ggplot() +
   labs(title="Sardine", y="Latitude", x="Longitude")+guides(alpha=FALSE)
 
 MapHaul3.2 <- MapHaul3+scale_size(range=c(0,30))+ scale_size_continuous(name = "Catch (t)")
-#ggsave(filename=paste(plot_dir,paste(species,"MapHauls(3).png",sep="_"),sep="/"),plot=MapHaul3.2,width=50,height=25,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"MapHauls(3).png",sep="_"),sep="/"),plot=MapHaul3.2,width=50,height=25,units="cm",dpi=200,type="cairo-png")
 
 
 #e) rows
@@ -543,8 +543,8 @@ MapHaul4.1 <- MapHaul4+scale_size(name="Catch (t)",range = c(3,14))+
 MapHaul4.1
 
 
-#ggsave(filename=paste(plot_dir,paste(species,"MapHauls(4).png",sep="_"),sep="/"),plot=MapHaul4.1,width=45,height=45,units="cm",dpi=200,type="cairo-png")
-#ggsave(filename=paste(plot_dir,paste(species,"MapHauls(5).png",sep="_"),sep="/"),plot=MapHaul4.1,width=32,height=30,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"MapHauls(4).png",sep="_"),sep="/"),plot=MapHaul4.1,width=45,height=45,units="cm",dpi=200,type="cairo-png")
+ggsave(filename=paste(plot_dir,paste(species,"MapHauls(5).png",sep="_"),sep="/"),plot=MapHaul4.1,width=32,height=30,units="cm",dpi=200,type="cairo-png")
 
 
 # # ENVIRONMENT (don't have this info)
