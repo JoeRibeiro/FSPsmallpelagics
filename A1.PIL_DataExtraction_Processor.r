@@ -8,10 +8,10 @@
 # ===================================================--
 # Note - input file has changed here C:\Users\JR13\Documents\LOCAL_NOT_ONEDRIVE\FSPsmallpelagics2022\Data\Fishers\FSP_Database_Fishers2122_old_before_spike_updated.xlsx
 
-species = 'PIL'
 
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 rm(list=ls())
+species = 'PIL'
 # set input, output directories
 inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))
 plot_dir <- file.path(getwd(), paste0("Data/plots/",species,"/"))

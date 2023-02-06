@@ -47,7 +47,7 @@ out_dir <- file.path(getwd(), "Data/Output/")
 list.files(inp_dir)
 
 #enter species------
-species <- "PIL" - #Not convinced any outputs from this script is species specific.
+species <- "PIL" #Not convinced any outputs from this script is species specific.
 
 #######################################################--
 # *****************************************************--

@@ -3,17 +3,22 @@
 # 12-03-2021; last updated 09/09/2022
 #---------------------------------------------------------------------## 
 
+species <- "PIL"
+
+
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 # set input, output directories
-inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
-plot_dir <- file.path(getwd(), "Data/plots/PIL/")
+inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))
+plot_dir <- file.path(getwd(), paste0("Data/plots/",species,"/"))
 out_dir <- file.path(getwd(), "Data/Output/")
+
+
 
 #libraries
 library(ggplot2);library(lubridate)
 
 #read files
-all3 <- read.csv(paste(out_dir,"PIL_processors_2022.csv",sep="/"),sep=",",header=T, stringsAsFactors = F)
+all3 <- read.csv(paste(out_dir,paste0(species,"_processors_2022.csv"),sep="/"),sep=",",header=T, stringsAsFactors = F)
 
 ###########################################################################################################################--
 #1 Database NON-AGGREGATED per Length category (processors only)----
@@ -53,11 +58,11 @@ names(pilproc_aggrL) <- c("species","date","division","length_cm","N","samplewt_
 list.files(out_dir)
 
 #read latest file logbook
-lbfishers <- read.csv(paste(out_dir,"/PIL_LBfishers_2223.csv",sep=""),sep=",",header=T,stringsAsFactors=F)# vs(3) has an error corrected
+lbfishers <- read.csv(paste(out_dir,paste0("/",species,"_LBfishers_2223.csv"),sep=""),sep=",",header=T,stringsAsFactors=F)# vs(3) has an error corrected
 dim(lbfishers)
 
 #read latest file length log
-lenfishers <- read.csv(paste(out_dir,"/PIL_TLfishers_2223.csv",sep=""),sep=",",header=T,stringsAsFactors=F)
+lenfishers <- read.csv(paste(out_dir,paste0("/",species,"_TLfishers_2223.csv"),sep=""),sep=",",header=T,stringsAsFactors=F)
 dim(lenfishers)
 
 head(lbfishers)
@@ -107,7 +112,7 @@ fishers2$haul_weight_t <- as.numeric(as.factor(fishers2$haul_weight_t))
 fishers2$haul_weight_kg <- fishers2$haul_weight_t*1000
 fishers2<- fishers2[,c("date","SampleID","TL","N","x","haul_weight_kg","vessel")]
 
-fishers2$species <- "PIL"
+fishers2$species <- species
 fishers2$division <- "27.7e"
 fishers2$processor <- ""
 fishers2$source <- "fishers"
@@ -152,6 +157,6 @@ agg2022 <- agg2022[,c("date","vessel","totalcatch_kg","length_cm","N","samplewt_
 
 
 #write.csv(agg2022,file=paste("C:/Users/SRC01/OneDrive - CEFAS/SC/Rscripts/FSP_database/PIL/Output","/PIL_agg2223.csv",sep=""),row.names=F)
-write.csv(agg2022,paste(out_dir,"PIL_agg2223.csv",sep="/"),row.names = F)
+write.csv(agg2022,paste(out_dir,paste0(species,"_agg2223.csv"),sep="/"),row.names = F)
 
 ########################################### END ##############################################################################-----

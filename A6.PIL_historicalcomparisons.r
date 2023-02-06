@@ -5,17 +5,21 @@
 
 # set input, output directories
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
-inp_dir <- file.path(getwd(), "Data/Processors/PIL/")
+
+species="PIL"
+
+inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))
+plot_dir <- file.path(getwd(), paste0("Data/plots/",species,"/"))
+out_dir <- file.path(getwd(), "Data/Output/")
 
 list.files(inp_dir)
-plot_dir <- file.path(getwd(), "plots/PIL/Historic_comp/")
-out_dir <- file.path(getwd(), "Data/Output/")
+
 
 #libraries
 library(ggplot2);library(lubridate); library(ggpubr); library(data.table); library(dplyr); library(gplots)
 
 #read files
-db<- read.csv(paste(out_dir,"PIL_agg2223.csv",sep="/"),sep=",",header=T, stringsAsFactors = F) # We don't have a file called PIL_db_agg anywhere?
+db<- read.csv(paste(out_dir,paste0(species,"_agg2223.csv"),sep="/"),sep=",",header=T, stringsAsFactors = F) # We don't have a file called PIL_db_agg anywhere?
 
 
 head(db);dim(db) #15706 13
@@ -26,7 +30,6 @@ head(db);dim(db) #15706 13
 db <- subset(db,!length_cm==0)
 head(db);dim(db)
 
-species="PIL"
 
 ## explore the data----
 #library("ggpubr")
