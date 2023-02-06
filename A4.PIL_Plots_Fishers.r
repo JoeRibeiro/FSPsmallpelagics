@@ -408,7 +408,7 @@ LOG1 <- LOG[!(LOG$lat==0|LOG$lon==0),]
 # P_All_MapHaul
 
 # Save map w piechart
-ggsave(filename=paste(plot_dir,paste(species,"MapHauls_Othersp.png",sep="_"),sep="/"),plot=P_All_MapHaul,width=50,height=20,units="cm",dpi=200,type="cairo-png")
+# ggsave(filename=paste(plot_dir,paste(species,"MapHauls_Othersp.png",sep="_"),sep="/"),plot=P_All_MapHaul,width=50,height=20,units="cm",dpi=200,type="cairo-png")
 
 
 # ===================================================--
@@ -452,10 +452,10 @@ table(PIL_hauls_pos$vessCode,PIL_hauls_pos$vessel)
 
 #longs for vessel 4 are off, remove for visualitzation
 dim(PIL_hauls_pos)
-PIL_hauls_pos <- subset(PIL_hauls_pos,!(lon>-4 & vessel=="LYONESSE"))
+#PIL_hauls_pos <- subset(PIL_hauls_pos,!(lon>-4 & vessel=="LYONESSE"))
 
 #select vessel
-vess1 <- subset(PIL_hauls_pos,vessCode=="vess4") #only 5 vessels this year
+vess1 <- subset(PIL_hauls_pos,vessCode=="vess1") 
 #a) one vessel----
 MapHaulv1 <- ggplot() +
   geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
