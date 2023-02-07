@@ -163,8 +163,8 @@ all.TL2 <- ggplot(all_cum2, aes(TL,Freq,fill=source)) + geom_bar(stat="identity"
   facet_grid(source~fishingseason,scales="free")
 all.TL2
 
-ggsave(filename = paste(plot_dir,paste(species,"FSP_2017_2022_fisherproc","_TL.png",sep="_"),sep="/"), 
-       plot = all.TL2, width = 35,height = 22, units = "cm", dpi = 300, type = "cairo-png") 
+#ggsave(filename = paste(plot_dir,paste(species,"FSP_2017_2022_fisherproc","_TL.png",sep="_"),sep="/"), 
+#       plot = all.TL2, width = 35,height = 22, units = "cm", dpi = 300, type = "cairo-png") 
 #save the file
 #write.csv(all_cum2,paste(plot_dir,"/",species,"_cum1722source.csv",sep=""),row.names = F)
 

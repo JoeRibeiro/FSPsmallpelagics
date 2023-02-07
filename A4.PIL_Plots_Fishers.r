@@ -15,7 +15,7 @@ lib <- function(packages){
   
 }
 
-species = 'SPR' # Not working for anything but PIL yet.  it makes outputs for sardine still even when the species is set to sprat
+species = 'PIL' # Not working for anything but PIL yet.  it makes outputs for sardine still even when the species is set to sprat
 
 # set input, output directories
 inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))

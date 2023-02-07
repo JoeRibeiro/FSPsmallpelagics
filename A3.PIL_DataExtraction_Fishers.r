@@ -243,7 +243,7 @@ str(TLb)
 TLc <- do.call(rbind.data.frame,TLb)
 
 # SUBSET
-TLc=TLc[TLc$sp==speciesname,]
+TLc=TLc[TLc$Species==speciesname,]
 
 TLc$Date <- as.Date(TLc$Date,format="%Y-%m-%d")
 TLc$month <- month(TLc$Date)

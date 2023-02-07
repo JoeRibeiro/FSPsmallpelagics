@@ -119,9 +119,9 @@ for(i in 1:length(var)){
     theme(legend.position = "none")+ggtitle(paste(var[i]))+
     scale_y_continuous(limits=c(0,max(plot1_cum$Freq)+10),expand=c(0,0))
   
-  ggsave(filename = paste(plot_dir,paste(var[i],species,"aTL.png",sep="_"),sep="/"), 
-         plot = plot1.TL1[[i]], width = 25, 
-         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#  ggsave(filename = paste(plot_dir,paste(var[i],species,"aTL.png",sep="_"),sep="/"), 
+#         plot = plot1.TL1[[i]], width = 25, 
+#         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
   
   
   ##LFD by month--
@@ -136,9 +136,9 @@ for(i in 1:length(var)){
   #make text smaller
   plot1.TL3[[i]] <- plot1.TL2[[i]]+theme(text = element_text(size=rel(5.0)))+ scale_fill_brewer(palette="Set1")
   
-  ggsave(filename = paste(plot_dir,paste(var[i],species,"bTLbyMonth.png",sep="_"),sep="/"), 
-         plot = plot1.TL3[[i]], width = 25, 
-         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#  ggsave(filename = paste(plot_dir,paste(var[i],species,"bTLbyMonth.png",sep="_"),sep="/"), 
+#         plot = plot1.TL3[[i]], width = 25, 
+#         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
   
 }
 
@@ -155,9 +155,9 @@ plot1.TL2[[i]] <- ggplot(plot1_cumMonth, aes(TL,Freq, group=factor(Month), fill=
 
 plot1.TL3[[i]] <- plot1.TL2[[i]]+theme(text = element_text(size=rel(5.0)))+ scale_fill_brewer(palette="Set1")
 
-ggsave(filename = paste(plot_dir,paste(var[i],species,"bTLbyMonth_freescale.png",sep="_"),sep="/"), 
-       plot = plot1.TL2[[i]], width = 25, 
-       height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#ggsave(filename = paste(plot_dir,paste(var[i],species,"bTLbyMonth_freescale.png",sep="_"),sep="/"), 
+#       plot = plot1.TL2[[i]], width = 25, 
+#       height = 20, units = "cm", dpi = 300, type = "cairo-png") 
 
 # ===================================================--
 # 2. Adjust a linear LWR plots in a loop ----
@@ -221,9 +221,9 @@ for(i in 1:length(var)){
   #      height = 20, units = "cm", dpi = 300, type = "cairo-png") 
   
   
-  ggsave(filename = paste(plot_dir,paste(var[i],species,"LWrel.png",sep="_"),sep="/"), 
-         plot = SP_LWrel[[i]], width = 25, 
-         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#  ggsave(filename = paste(plot_dir,paste(var[i],species,"LWrel.png",sep="_"),sep="/"), 
+#         plot = SP_LWrel[[i]], width = 25, 
+#         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
   
 }
 
@@ -298,15 +298,15 @@ for(i in 1:length(var)){
   
   SP_LWrel[[i]] <- ggplotRegression(lm(logW~logL,data=plot1))
   
-  ggsave(filename = paste(plot_dir,paste(var[i],species,"LWrel.png",sep="_"),sep="/"), 
-         plot = SP_LWrel[[i]], width = 25, 
-         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#  ggsave(filename = paste(plot_dir,paste(var[i],species,"LWrel.png",sep="_"),sep="/"), 
+#         plot = SP_LWrel[[i]], width = 25, 
+#         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
   
   composition <- ggarrange(SP_LWrel[[1]],SP_LWrel[[2]],nrow=2,ncol=1)
   
-  ggsave(filename = paste(plot_dir,paste("Interfishallmonths",species,"LWrel.png",sep="_"),sep="/"), 
-         plot = composition, width = 25, 
-         height = 20, units = "cm", dpi = 300, type = "cairo-png")
+#  ggsave(filename = paste(plot_dir,paste("Interfishallmonths",species,"LWrel.png",sep="_"),sep="/"), 
+#         plot = composition, width = 25, 
+#         height = 20, units = "cm", dpi = 300, type = "cairo-png")
   
 }
 
@@ -334,18 +334,18 @@ month <- ggplot(db, aes(length_cm, weight_g, col=month)) + geom_point() +
   geom_smooth(method="lm", se=FALSE)+theme_bw()#+scale_color_brewer(palette="Dark2")
 
 
-ggsave(filename = paste(plot_dir,paste("Interfish",species,"LWrel_bymonth.png",sep="_"),sep="/"), 
-       plot = month, width = 25, 
-       height = 20, units = "cm", dpi = 300, type = "cairo-png")
+#ggsave(filename = paste(plot_dir,paste("Interfish",species,"LWrel_bymonth.png",sep="_"),sep="/"), 
+#       plot = month, width = 25, 
+#       height = 20, units = "cm", dpi = 300, type = "cairo-png")
 
 
 #by vessel
 vessel <- ggplot(db, aes(length_cm, weight_g, col=vessel)) + geom_point() +
   geom_smooth(method="lm", se=FALSE)+theme_bw()
 
-ggsave(filename = paste(plot_dir,paste("Interfish",species,"LWrel_byvessel.png",sep="_"),sep="/"), 
-       plot = vessel, width = 25, 
-       height = 20, units = "cm", dpi = 300, type = "cairo-png")
+#ggsave(filename = paste(plot_dir,paste("Interfish",species,"LWrel_byvessel.png",sep="_"),sep="/"), 
+#       plot = vessel, width = 25, 
+#       height = 20, units = "cm", dpi = 300, type = "cairo-png")
 
 
 #by vessel and month
@@ -353,9 +353,9 @@ vesmonth <- ggplot(db, aes(length_cm, weight_g, col=month)) + geom_point() +
   geom_smooth(method="lm", se=FALSE)+theme_bw()+
   facet_grid(vessel~month)
 
-ggsave(filename = paste(plot_dir,paste("Interfish",species,"LWrel_byvessel.png",sep="_"),sep="/"), 
-       plot = vesmonth, width = 35, 
-       height = 20, units = "cm", dpi = 300, type = "cairo-png")
+#ggsave(filename = paste(plot_dir,paste("Interfish",species,"LWrel_byvessel.png",sep="_"),sep="/"), 
+#       plot = vesmonth, width = 35, 
+#       height = 20, units = "cm", dpi = 300, type = "cairo-png")
 
 
 #by vessel and month (2)
@@ -363,9 +363,9 @@ vesmonth2 <- ggplot(db, aes(length_cm, weight_g, col=month)) + geom_point() +
   geom_smooth(method="lm", se=FALSE)+theme_bw()+
   facet_wrap(~vessel)
 
-ggsave(filename = paste(plot_dir,paste("Interfish",species,"LWrel_byvessel.png",sep="_"),sep="/"), 
-       plot = vesmonth2, width = 35, 
-       height = 20, units = "cm", dpi = 300, type = "cairo-png")
+#ggsave(filename = paste(plot_dir,paste("Interfish",species,"LWrel_byvessel.png",sep="_"),sep="/"), 
+#       plot = vesmonth2, width = 35, 
+#       height = 20, units = "cm", dpi = 300, type = "cairo-png")
 
 
 
@@ -438,9 +438,9 @@ for(i in 1:length(var)){
                                  " b =", round(coefficients(nls_fit_w11)[["b"]],digits=5)), x=15,y=125) +
     ggtitle(paste(var[i]))
   
-  ggsave(filename = paste(plot_dir,paste(var[i],species,"NONLWrel.png",sep="_"),sep="/"), 
-         plot = SP_NONLWrel[[i]], width = 25, 
-         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#  ggsave(filename = paste(plot_dir,paste(var[i],species,"NONLWrel.png",sep="_"),sep="/"), 
+#         plot = SP_NONLWrel[[i]], width = 25, 
+#         height = 20, units = "cm", dpi = 300, type = "cairo-png") 
 }
 
 print(SP_NONLWrel[[1]])
@@ -578,8 +578,8 @@ all.TL1 <- ggplot(all_cum, aes(TL, Freq)) + geom_bar(stat="identity", position="
   theme(legend.position = "none")+ggtitle(paste(species,"all processors",sep="_"))+
   geom_vline(aes(xintercept=wtMean), col="red", size=1.2,linetype=2)
 
-ggsave(filename = paste(plot_dir,paste(species,"allprocessors","aTL.png",sep="_"),sep="/"), 
-       plot = all.TL1, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#ggsave(filename = paste(plot_dir,paste(species,"allprocessors","aTL.png",sep="_"),sep="/"), 
+#       plot = all.TL1, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
 
 
 ## LFD by month----
@@ -608,8 +608,8 @@ all.TL2 <- ggplot(all_cumMonth, aes(TL,Freq, group=factor(Month), fill=factor(Mo
         axis.title.y = element_text(color = "black", size = 15),axis.title.x = element_text(color = "black", size = 15))
 #+ ggtitle("Sprat-All processors") 
 
-ggsave(filename = paste(plot_dir,paste(species,"allprocessors_TLbyMonth.png",sep="_"),sep="/"), 
-       plot = all.TL2, width = 30,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#ggsave(filename = paste(plot_dir,paste(species,"allprocessors_TLbyMonth.png",sep="_"),sep="/"), 
+#       plot = all.TL2, width = 30,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
 
 
 
@@ -637,8 +637,8 @@ nonLWR <- ggplot(db, aes(length_cm,weight_g))+
   theme(legend.position = "bottom")
 
 
-ggsave(filename = paste(plot_dir,paste(species,"allprocessors1324_NONLWR.png",sep="_"),sep="/"), 
-       plot = nonLWR, width = 30,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#ggsave(filename = paste(plot_dir,paste(species,"allprocessors1324_NONLWR.png",sep="_"),sep="/"), 
+#       plot = nonLWR, width = 30,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
 
 
 
@@ -659,8 +659,8 @@ LWR <- ggplot(db, aes(log(length_cm),log(weight_g)))+
 
 
 
-ggsave(filename = paste(plot_dir,paste(species,"allprocessors1324_LWR.png",sep="_"),sep="/"), 
-       plot = LWR, width = 30,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#ggsave(filename = paste(plot_dir,paste(species,"allprocessors1324_LWR.png",sep="_"),sep="/"), 
+#       plot = LWR, width = 30,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
 
 
 
@@ -773,7 +773,7 @@ all.TL1 <- ggplot(interfat, aes(date, fat)) + geom_line() + geom_point()+
   theme(legend.position = "none")+ggtitle("")+
   geom_hline(aes(yintercept=meanfat), col="red", size=0.5,linetype="dashed")
 
-ggsave(filename = paste(plot_dir,paste("Interfish_fatcontent.png",sep="_"),sep="/"), 
-       plot = all.TL1, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
+#ggsave(filename = paste(plot_dir,paste("Interfish_fatcontent.png",sep="_"),sep="/"), 
+#       plot = all.TL1, width = 25,height = 20, units = "cm", dpi = 300, type = "cairo-png") 
 
 ###################################### END #############################################################################
