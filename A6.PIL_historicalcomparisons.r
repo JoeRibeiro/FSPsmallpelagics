@@ -6,7 +6,7 @@
 # set input, output directories
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 
-species="PIL"
+species="PIL"#works
 
 inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))
 plot_dir <- file.path(getwd(), paste0("Data/plots/",species,"/"))
