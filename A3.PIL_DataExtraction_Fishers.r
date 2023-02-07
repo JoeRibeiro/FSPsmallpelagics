@@ -6,6 +6,12 @@
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
 rm(list=ls())
 
+
+#enter species------
+species <- "SPR"
+speciesname <- "Sardine"
+
+
 #.rs.restartR();#xlcFreeMemory();#gc() #see memmory used
 #options(java.parameters = "-Xmx1000m")  ## memory set to 2 GB
 #install.packages("rlang")
@@ -45,9 +51,6 @@ lib(packages)
 inp_dir <- file.path(getwd(), "Data/Fishers//")
 out_dir <- file.path(getwd(), "Data/Output/")
 list.files(inp_dir)
-
-#enter species------
-species <- "SPR" #Not convinced any outputs from this script is species specific.
 
 #######################################################--
 # *****************************************************--
@@ -238,6 +241,9 @@ str(TLb)
 
 # from list to DF
 TLc <- do.call(rbind.data.frame,TLb)
+
+# SUBSET
+TLc=TLc[TLc$sp==speciesname,]
 
 TLc$Date <- as.Date(TLc$Date,format="%Y-%m-%d")
 TLc$month <- month(TLc$Date)
