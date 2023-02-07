@@ -3,7 +3,7 @@
 # 12-03-2021; last updated 09/09/2022
 #---------------------------------------------------------------------## 
 
-species <- "PIL"
+species <- "SPR"
 
 
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")

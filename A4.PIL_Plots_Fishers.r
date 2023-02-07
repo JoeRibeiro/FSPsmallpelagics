@@ -15,7 +15,7 @@ lib <- function(packages){
   
 }
 
-species <- "PIL"
+species <- "SPR"
 
 # set input, output directories
 inp_dir <- file.path(getwd(), paste0("Data/Fishers/",species,"/"))
