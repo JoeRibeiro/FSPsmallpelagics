@@ -3,7 +3,7 @@
 # 12-03-2021; last updated 09/09/2022
 #---------------------------------------------------------------------## 
 
-species <- "SPR"
+species = 'PIL' # Not working for anything but PIL yet.  it makes outputs for sardine still even when the species is set to sprat
 
 
 setwd("C:/Users/JR13/Documents/LOCAL_NOT_ONEDRIVE/FSPsmallpelagics2022/")
