@@ -8,7 +8,7 @@ rm(list=ls())
 
 
 #enter species------
-species <- "SPR"
+species = 'PIL' # Not working for anything but PIL yet.  it makes outputs for sardine still even when the species is set to sprat
 speciesname <- "Sardine"
 
 
