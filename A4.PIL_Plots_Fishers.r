@@ -172,6 +172,8 @@ all.TL1 <- ggplot(TLc1, aes(TL, V1)) + geom_bar(stat="identity", position="dodge
 
 ggsave(filename=paste(plot_dir,paste(species,"allfishers_TL.png",sep="_"),sep="/"),plot=all.TL1,width=25,height=20,units="cm",dpi=300,type="cairo-png")
 
+# weighted mean
+print(weighted.mean(TLc1$TL,TLc1$V1))
 
 ## 3.1b LFD by month and vessel----
 #put name into months and order them
@@ -206,6 +208,7 @@ all.TL2 <- ggplot(TLc3, aes(TL,V1, group=factor(month), fill=factor(month))) +
 ggsave(filename=paste(plot_dir,paste(species,"allfishers_TLMonths(2).png",sep="_"),sep="/"),plot=all.TL2,width=25,height=20,units="cm",dpi=300,type="cairo-png")
 
 
+scaleFUN <- function(x) sprintf("%.0f", x) 
 #Pelagic Marskman is pushing the others, so maybe you have to just plot him alone, or set the N free
 #better visulization:m months in columns
 all.TL2 <- ggplot(TLc3, aes(TL,V1, group=factor(month), fill=factor(month))) +
@@ -216,7 +219,9 @@ all.TL2 <- ggplot(TLc3, aes(TL,V1, group=factor(month), fill=factor(month))) +
   theme(legend.position="none",strip.text.x=element_text(size=12,colour="black"),
         strip.text.y = element_text(size=12),axis.text.x = element_text(color = "black", size = 10),
         axis.text.y = element_text(color = "black", size = 10),
-        axis.title.y = element_text(color = "black", size = 15),axis.title.x = element_text(color = "black", size = 15))
+        axis.title.y = element_text(color = "black", size = 15),axis.title.x = element_text(color = "black", size = 15)) +
+  scale_x_continuous(labels=scaleFUN)
+
 # + ggtitle(paste(species,"All processors"))
 all.TL2
 
