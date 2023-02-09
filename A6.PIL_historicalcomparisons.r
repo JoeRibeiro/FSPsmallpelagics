@@ -374,7 +374,7 @@ T_Catch1
 
 
 table(Catch$vessel)
-Catch2 <- subset(Catch,vessel%in% c("LYONESSE", "CHARLOTTE CLARE",  "GALWAD-Y-MOR",     "GOLDEN HARVEST"))
+Catch2 <- subset(Catch,vessel%in% c("Vessel1", "CHARLOTTE CLARE",  "GALWAD-Y-MOR",     "GOLDEN HARVEST"))
 T_Catch2<- ggplot(Catch2, aes(month2, x/1000, group=vessel, col=vessel)) + geom_line(size=1.2) +geom_point()+
   theme_bw(25) + ylab("tonnes") + xlab("month") + 
   theme(legend.position="top",legend.text=element_text(color="black",size=10),
@@ -387,7 +387,7 @@ T_Catch2
 #       plot = T_Catch2, width = 40,height = 25, units = "cm", dpi = 300, type = "cairo-png") 
 
 
-Catch3 <- subset(Catch,vessel%in% c("RACHEL ANN", "SERENE DAWN"))
+Catch3 <- subset(Catch,vessel%in% c("RACHEL ANN", "Vessel2"))
 T_Catch3<- ggplot(Catch3, aes(month2, x/1000, group=vessel, col=vessel)) + geom_line(size=1.2) +geom_point()+
   theme_bw(25) + ylab("tonnes") + xlab("month") + 
   theme(legend.position="top",legend.text=element_text(color="black",size=10),

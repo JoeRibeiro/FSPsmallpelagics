@@ -47,23 +47,23 @@ tapply(db$length_cm, db$source, summary)
 table(db$month,db$vessel,db$source)
 
 #galwad-y-mor common months are 10-12
-#lyonesse common months are 7-9
+#Vessel1 common months are 7-9
 #mayflower common months are 7-12
 #pelagic marskman common months are 7-12
 #resolute common months 7-9
-#serene dawn common months are 7-12
+#Vessel2 common months are 7-12
 #vesta common months are 8
 #gm <- subset(db,vessel=="GALWAD-Y-MOR"&month%in%c(10,11,12))
-l <- subset(db,vessel=="LYONESSE"&month%in%c(9,11,12))
+l <- subset(db,vessel=="Vessel1"&month%in%c(9,11,12))
 #mf <- subset(db,vessel=="MAYFLOWER"&month%in%c(7,8,9,10,11,12))
 #pm <- subset(db,vessel=="PELAGIC MARKSMAN"&month%in%c(7,8,9,10,11,12))
 #r <- subset(db,vessel=="RESOLUTE"&month%in%c(7,8,9))
-sd <- subset(db,vessel=="SERENE DAWN"&month%in%c(7,8,9,10,11,12))
+sd <- subset(db,vessel=="Vessel2"&month%in%c(7,8,9,10,11,12))
 #v <- subset(db,vessel=="VESTA"&month%in%c(8))
 #cc <- subset(db,vessel=="CHARLOTTE CLARE"&month%in%c(11))
 
 #p <- subset(db,vessel%in%c("ASTHORE","CHARLOTTE CLARE","GOLDEN HARVEST","PRIDE OF CORNWALL","RACHEL ANNE","CONSTANT FRIEND","MARY ANNE"))
-p <- subset(db,vessel%in%c("SERENE DAWN","LYONESSE"))
+p <- subset(db,vessel%in%c("Vessel2","Vessel1"))
 
 
 #db2 <- rbind(gm,l,mf,pm,r,sd,v,p)

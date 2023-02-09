@@ -127,7 +127,7 @@ table(pil$intake)
 table(pil$vessel)
 
 pil$vessel[pil$vessel=="CC"] <- "CHARLOTTE CLARE"
-pil$vessel[pil$vessel=="SD"] <- "SERENE DAWN"
+pil$vessel[pil$vessel=="SD"] <- "Vessel2"
 pil$vessel <- toupper(pil$vessel)
 table(pil$landed)
 pil$landed <- toupper(pil$landed)
@@ -323,7 +323,7 @@ for (i in 1:nrow(FALFISH)){
   {if(as.character(substr(FALFISH$ID[i],1,3)=="GHA"))
     FALFISH$Vessel[i]="GOLDEN HARVEST"}
   {if(as.character(substr(FALFISH$ID[i],1,3)=="LYO"))
-    FALFISH$Vessel[i]="LYONESSE"}
+    FALFISH$Vessel[i]="Vessel1"}
   {if(as.character(substr(FALFISH$ID[i],1,3)=="PLM"))
     FALFISH$Vessel[i]="PELAGIC MARKSMAN"}
   {if(as.character(substr(FALFISH$ID[i],1,3)=="GAL"))
@@ -496,7 +496,7 @@ write.csv(FALFISH, file=paste(out_dir,paste0("/",species,"_FALFISH_2022.csv"),se
 # mayflower <-subset(size,Vessel=="mayflower")
 # vesta <- subset(size,Vessel=="vesta")
 # resolute <- subset(size,Vessel=="resolute")
-# serene <- subset(size,Vessel=="serene dawn")
+# serene <- subset(size,Vessel=="Vessel2")
 # 
 # ves=c("asthore","mayflower","vesta","resolute","serene")
 # dat <- unique(size$Date)
@@ -522,7 +522,7 @@ write.csv(FALFISH, file=paste(out_dir,paste0("/",species,"_FALFISH_2022.csv"),se
 # mayflower <-subset(length,Vessel=="mayflower")
 # vesta <- subset(length,Vessel=="vesta")
 # resolute <- subset(length,Vessel=="resolute")
-# serene <- subset(length,Vessel=="serene dawn")
+# serene <- subset(length,Vessel=="Vessel2")
 # 
 # len <- list()
 # lenses <- list()
@@ -788,7 +788,7 @@ write.csv(FALFISH, file=paste(out_dir,paste0("/",species,"_FALFISH_2022.csv"),se
 # 
 # land$date <- as.Date(land$date,format="%Y-%m-%d")
 # 
-# plot(land$date,land$`SERENE DAWN`)
+# plot(land$date,land$`Vessel2`)
 # plot(land$date,land$RESOLUTE,type="l")
 # ggplot(aes(date),data=land)
 # 

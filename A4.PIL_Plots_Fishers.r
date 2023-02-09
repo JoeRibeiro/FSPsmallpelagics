@@ -458,11 +458,11 @@ table(PIL_hauls_pos$vessCode,PIL_hauls_pos$vessel)
 
 #longs for vessel 4 are off, remove for visualitzation
 dim(PIL_hauls_pos)
-#PIL_hauls_pos <- subset(PIL_hauls_pos,!(lon>-4 & vessel=="LYONESSE"))
+#PIL_hauls_pos <- subset(PIL_hauls_pos,!(lon>-4 & vessel=="Vessel1"))
 
 #select vessel
 vess1 <- subset(PIL_hauls_pos,vessCode=="vess1") 
-#a) one vessel---- Only one vessel provided logbook data by Feb 2023, lyonesse
+#a) one vessel---- Only one vessel provided logbook data by Feb 2023, Vessel1
 MapHaulv1 <- ggplot() +
   geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
   geom_polypath(col="black") +
@@ -510,21 +510,21 @@ MapHaul2 <- MapHaul+scale_size(range=c(0,30))+ scale_size_continuous(name = "Cat
 ggsave(filename=paste(plot_dir,paste(species,"MapHauls(1).png",sep="_"),sep="/"),plot=MapHaul,width=50,height=20,units="cm",dpi=200,type="cairo-png")
 ggsave(filename=paste(plot_dir,paste(species,"MapHauls(2).png",sep="_"),sep="/"),plot=MapHaul2,width=50,height=20,units="cm",dpi=200,type="cairo-png")
 
-
-#d) by month/vessel----
-MapHaul3 <- ggplot() + 
-  geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
-  geom_polypath(col="black") +guides(fill=FALSE)+
-  theme_bw(22) +
-  geom_point(data=PIL_hauls_pos, aes(lon, lat,group=factor(month),alpha=0.8,size=pil/1000,fill=factor(month), col=factor(month)))+
-#  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
-  scale_color_discrete(name = "Month", labels=c(levels(PIL_hauls_pos$month)))+
-  scale_size_continuous(name = "Catch (t)",range = c(min(PIL_hauls_pos$pil/1000),(max(PIL_hauls_pos$pil/1000))))+
-  facet_grid(vessCode~month)+theme(legend.position = "bottom")+
-  labs(title="Sardine", y="Latitude", x="Longitude")+guides(alpha=FALSE)
-
-MapHaul3.2 <- MapHaul3+scale_size(range=c(0,30))+ scale_size_continuous(name = "Catch (t)")
-ggsave(filename=paste(plot_dir,paste(species,"MapHauls(3).png",sep="_"),sep="/"),plot=MapHaul3.2,width=50,height=25,units="cm",dpi=200,type="cairo-png")
+# 
+# #d) by month/vessel----
+# MapHaul3 <- ggplot() + 
+#   geom_sf(data=worldcoastlines,fill='darkseagreen') + coord_sf(xlim = c(-6,-1), ylim = c(49.8, 51.5)) +
+#   geom_polypath(col="black") +guides(fill=FALSE)+
+#   theme_bw(22) +
+#   geom_point(data=PIL_hauls_pos, aes(lon, lat,group=factor(month),alpha=0.8,size=pil/1000,fill=factor(month), col=factor(month)))+
+# #  scale_y_continuous(expand = c(0,0)) + scale_x_continuous(expand = c(0,0)) + 
+#   scale_color_discrete(name = "Month", labels=c(levels(PIL_hauls_pos$month)))+
+#   scale_size_continuous(name = "Catch (t)",range = c(min(PIL_hauls_pos$pil/1000),(max(PIL_hauls_pos$pil/1000))))+
+#   facet_grid(vessCode~month)+theme(legend.position = "bottom")+
+#   labs(title="Sardine", y="Latitude", x="Longitude")+guides(alpha=FALSE)
+# 
+# MapHaul3.2 <- MapHaul3+scale_size(range=c(0,30))+ scale_size_continuous(name = "Catch (t)")
+# ggsave(filename=paste(plot_dir,paste(species,"MapHauls(3).png",sep="_"),sep="/"),plot=MapHaul3.2,width=50,height=25,units="cm",dpi=200,type="cairo-png")
 
 
 #e) rows
